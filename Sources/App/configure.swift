@@ -44,6 +44,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateOrderItems())
   app.migrations.add(CreateTokens())
   app.migrations.add(CreateTokenScopes())
+  app.migrations.add(CreateFriends())
 
   if Environment.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())

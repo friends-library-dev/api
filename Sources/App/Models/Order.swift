@@ -1,11 +1,6 @@
 import Fluent
 import Vapor
 
-enum Lang: String, Codable, CaseIterable {
-  case en
-  case es
-}
-
 final class Order: Model, Content {
   static let schema = "orders"
 
