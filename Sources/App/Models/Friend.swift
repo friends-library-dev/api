@@ -46,12 +46,16 @@ final class Friend: Model, Content {
   @Timestamp(key: FieldKey.updatedAt, on: .update)
   var updatedAt: Date?
 
+  @Children(for: \FriendResidence.$friend)
+  var residences: [FriendResidence]
+
   init() {}
 }
 
 extension Friend {
   enum M6 {
     static let tableName = "friends"
+    static let id = FieldKey("id")
     static let lang = FieldKey("lang")
     static let name = FieldKey("name")
     static let slug = FieldKey("slug")
