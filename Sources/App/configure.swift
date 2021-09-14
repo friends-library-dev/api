@@ -77,8 +77,12 @@ private func configureScheduledJobs(_ app: Application) throws {
 private func corsMiddleware(_ app: Application) -> CORSMiddleware {
   let corsConfiguration = CORSMiddleware.Configuration(
     allowedOrigin: app.environment == .production
-      ? .custom("https://orders.friendslibrary.com") : .all,
-    allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+      ? .any([
+        "https://orders.friendslibrary.com",
+        "https://www.friendslibrary.com",
+        "https://www.bibliotecadelosamigos.org",
+      ]) : .all,
+    allowedMethods: [.GET, .POST, .OPTIONS],
     allowedHeaders: [
       .accept,
       .authorization,
@@ -88,13 +92,7 @@ private func corsMiddleware(_ app: Application) -> CORSMiddleware {
       .userAgent,
       .accessControlAllowOrigin,
       .referer,
-      .xAuthorizationType,
     ]
   )
   return CORSMiddleware(configuration: corsConfiguration)
-}
-
-extension HTTPHeaders.Name {
-  public static let xAuthorizationType = HTTPHeaders.Name("X-Authorization-Type")
-  public static let wildcard = HTTPHeaders.Name("*")
 }
