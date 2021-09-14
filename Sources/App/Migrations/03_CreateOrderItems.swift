@@ -8,7 +8,9 @@ struct CreateOrderItems: Migration {
         return database.schema("order_items")
           .id()
           .field(
-            "order_id", .uuid, .required,
+            "order_id",
+            .uuid,
+            .required,
             .references("orders", "id", onDelete: .cascade)
           )
           .field("title", .string, .required)
