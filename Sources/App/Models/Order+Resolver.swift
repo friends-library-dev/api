@@ -19,6 +19,7 @@ struct CreateOrderInput: Codable {
   }
 
   let id: UUID?
+  let freeOrderRequestId: UUID?
   let paymentId: String
   let printJobStatus: Order.PrintJobStatus
   let printJobId: Int?
@@ -54,6 +55,7 @@ extension Resolver {
     if let id = args.input.id {
       order.id = id
     }
+    order.$freeOrderRequest.id = args.input.freeOrderRequestId
     order.paymentId = args.input.paymentId
     order.printJobStatus = args.input.printJobStatus
     order.printJobId = args.input.printJobId

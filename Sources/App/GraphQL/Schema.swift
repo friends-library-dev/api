@@ -101,6 +101,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("createdAt", at: \.createdAt)
     Field("updatedAt", at: \.updatedAt)
     Field("items", with: \.$items)
+    Field("freeOrderRequest", with: \.$freeOrderRequest)
   }
 
   Type(OrderItem.self) {
@@ -142,6 +143,7 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
 
   Input(CreateOrderInput.self) {
     InputField("id", at: \.id)
+    InputField("freeOrderRequestId", at: \.freeOrderRequestId)
     InputField("paymentId", at: \.paymentId)
     InputField("printJobStatus", at: \.printJobStatus)
     InputField("printJobId", at: \.printJobId)

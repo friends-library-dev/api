@@ -87,6 +87,52 @@ final class OrderResolverTests: GraphQLTestCase {
     ).run(self, variables: ["input": order])
   }
 
+  func testCreateOrderWithFreeRequestId() throws {
+    let freeOrderRequest = FreeOrderRequest.createFixture(on: app.db)
+    let order: Map = .dictionary([
+      "freeOrderRequestId": .string(freeOrderRequest.id!.uuidString),
+      "paymentId": .string("stripe-123"),
+      "printJobStatus": .string("presubmit"),
+      "shippingLevel": .string("mail"),
+      "amount": .int(33),
+      "shipping": .int(33),
+      "taxes": .int(33),
+      "ccFeeOffset": .int(33),
+      "email": .string("jared@netrivet.com"),
+      "addressName": .string("Jared Henderson"),
+      "addressStreet": .string("123 Magnolia Lane"),
+      "addressCity": .string("New York"),
+      "addressState": .string("NY"),
+      "addressZip": .string("90210"),
+      "addressCountry": .string("US"),
+      "lang": .string("en"),
+      "source": .string("website"),
+      "items": .array([
+        .dictionary([
+          "title": .string("Journal of George Fox"),
+          "documentId": .string("9050edba-197e-498f-9fb8-61c36abae59e"),
+          "editionType": .string("original"),
+          "quantity": .int(1),
+          "unitPrice": .int(333),
+        ])
+      ]),
+    ])
+
+    GraphQLTest(
+      """
+      mutation CreateOrder($input: CreateOrderInput!) {
+        order: createOrder(input: $input) {
+          freeOrderRequest {
+            id
+          }
+        }
+      }
+      """,
+      expectedData: .containsKVPs(["id": freeOrderRequest.id!.uuidString]),
+      headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
+    ).run(self, variables: ["input": order])
+  }
+
   func testUpdateOrder() throws {
     let order = Order.createFixture(on: app.db)
 
