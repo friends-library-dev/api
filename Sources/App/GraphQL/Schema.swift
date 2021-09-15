@@ -61,6 +61,23 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("orderItems", at: \.orderItems)
   }
 
+  Type(FreeOrderRequest.self) {
+    Field("id", at: \.id)
+    Field("email", at: \.email)
+    Field("requestedBooks", at: \.requestedBooks)
+    Field("aboutRequester", at: \.aboutRequester)
+    Field("name", at: \.name)
+    Field("addressStreet", at: \.addressStreet)
+    Field("addressStreet2", at: \.addressStreet2)
+    Field("addressCity", at: \.addressCity)
+    Field("addressState", at: \.addressState)
+    Field("addressZip", at: \.addressZip)
+    Field("addressCountry", at: \.addressCountry)
+    Field("source", at: \.source)
+    Field("createdAt", at: \.createdAt)
+    Field("updatedAt", at: \.updatedAt)
+  }
+
   Type(Order.self) {
     Field("id", at: \.id)
     Field("paymentId", at: \.paymentId)
@@ -107,6 +124,20 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     InputField("editionType", at: \.editionType)
     InputField("quantity", at: \.quantity)
     InputField("unitPrice", at: \.unitPrice)
+  }
+
+  Input(CreateFreeOrderRequestInput.self) {
+    InputField("email", at: \.email)
+    InputField("name", at: \.name)
+    InputField("requestedBooks", at: \.requestedBooks)
+    InputField("aboutRequester", at: \.aboutRequester)
+    InputField("addressStreet", at: \.addressStreet)
+    InputField("addressStreet2", at: \.addressStreet2)
+    InputField("addressCity", at: \.addressCity)
+    InputField("addressState", at: \.addressState)
+    InputField("addressZip", at: \.addressZip)
+    InputField("addressCountry", at: \.addressCountry)
+    InputField("source", at: \.source)
   }
 
   Input(CreateOrderInput.self) {
@@ -169,6 +200,10 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
 
     Field("getModelsCounts", at: Resolver.getModelsCounts)
+
+    Field("getFreeOrderRequest", at: Resolver.getFreeOrderRequest) {
+      Argument("id", at: \.id)
+    }
   }
 
   Mutation {
@@ -185,6 +220,10 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     }
 
     Field("updateOrders", at: Resolver.updateOrders) {
+      Argument("input", at: \.input)
+    }
+
+    Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
       Argument("input", at: \.input)
     }
   }

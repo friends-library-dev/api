@@ -1,11 +1,6 @@
 import Fluent
 import Vapor
 
-enum FreeOrderRequestSource: String, Codable, CaseIterable {
-  case mainWebsite
-  case zoeWebsite
-}
-
 final class FreeOrderRequest: Model, Content {
   static let schema = FreeOrderRequest.M6.tableName
 
@@ -13,7 +8,7 @@ final class FreeOrderRequest: Model, Content {
   var id: UUID?
 
   @Field(key: FreeOrderRequest.M6.name)
-  var addressName: String
+  var name: String
 
   @Field(key: FreeOrderRequest.M6.email)
   var email: String
@@ -42,8 +37,8 @@ final class FreeOrderRequest: Model, Content {
   @Field(key: FreeOrderRequest.M6.addressCountry)
   var addressCountry: String
 
-  @Enum(key: FreeOrderRequest.M6.source)
-  var source: FreeOrderRequestSource
+  @Field(key: FreeOrderRequest.M6.source)
+  var source: String
 
   @Timestamp(key: FieldKey.createdAt, on: .create)
   var createdAt: Date?
