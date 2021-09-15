@@ -14,7 +14,7 @@
     "migrate:up": "vapor run migrate --yes",
     "migrate:down": "vapor run migrate --revert --yes",
     "migrate:reset": "npm run migrate:down && npm run migrate:up",
-    "migrate:nuke": "killall Postico; dropdb flp && createdb flp && npm run migrate:up",
+    "migrate:nuke": "killall Postico; dropdb flp_dev && createdb flp_dev && npm run migrate:up",
     "schema:update": "apollo client:download-schema --endpoint=http://127.0.0.1:8080/graphql ./Sources/App/GraphQL/schema.graphql",
     "lint": "test $(swift-format-5.3 --mode lint --configuration ./.swift-format.json --recursive ./Sources ./Tests ./Package.swift 2>&1 | wc -l | sed -E 's/ //g') == '0'",
     "format": "swift-format-5.3 --configuration ./.swift-format.json --recursive --in-place ./Sources ./Tests ./Package.swift",
