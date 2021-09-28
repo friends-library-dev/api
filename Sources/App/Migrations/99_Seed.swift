@@ -7,6 +7,7 @@ struct Seeded {
     let queryOrders = UUID(uuidString: "FCBF1F83-E771-4BA5-8DC3-137322793BE5")!
     let mutateDownloads = UUID(uuidString: "A957D4BC-F172-4A65-9E70-FFE06B5A1484")!
     let mutateOrders = UUID(uuidString: "3410A02F-156C-4EE4-8145-2D7EBCD4885E")!
+    let mutateArtifactProductionVersions = UUID(uuidString: "C23BD372-AC46-4005-B612-78B23BCADEF9")!
     let allScopes = UUID(uuidString: "AB9E8FCA-BA51-4E7E-B5D1-00D9269503AE")!
   }
 
@@ -21,8 +22,19 @@ struct Seed: Migration {
       Seeded.tokens.mutateDownloads: ("mutateDownloads", [.mutateDownloads]),
       Seeded.tokens.queryOrders: ("queryOrders", [.queryOrders]),
       Seeded.tokens.mutateOrders: ("mutateOrders", [.mutateOrders]),
+      Seeded.tokens.mutateArtifactProductionVersions: (
+        "mutateArtifactProductionVersions",
+        [.mutateArtifactProductionVersions]
+      ),
       Seeded.tokens.allScopes: (
-        "allScopes", [.queryDownloads, .queryOrders, .mutateDownloads, .mutateOrders]
+        "allScopes",
+        [
+          .queryDownloads,
+          .queryOrders,
+          .mutateDownloads,
+          .mutateOrders,
+          .mutateArtifactProductionVersions,
+        ]
       ),
     ]
 

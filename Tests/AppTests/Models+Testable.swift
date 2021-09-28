@@ -1,5 +1,6 @@
 import Fluent
 import Foundation
+import Vapor
 
 @testable import App
 
@@ -60,5 +61,62 @@ extension FreeOrderRequest {
     }
     try! request.create(on: db).wait()
     return request
+  }
+}
+
+extension ArtifactProductionVersion {
+  static func createFixture(
+    on db: Database,
+    customize: ((ArtifactProductionVersion) -> Void)? = nil
+  ) -> ArtifactProductionVersion {
+    let version = ArtifactProductionVersion(version: UUID().uuidString)
+    if let customize = customize {
+      customize(version)
+    }
+    try! version.create(on: db).wait()
+    return version
+  }
+}
+
+enum TimestampCol: String {
+  case createdAt = "created_at"
+  case updatedAt = "updated_at"
+  case deletedAt = "deleted_at"
+}
+
+enum TimestampAdjustment {
+  case subtractingDays(Int)
+}
+
+extension Model where IDValue == UUID {
+  func adjustTimestamp(_ col: TimestampCol, _ adjustment: TimestampAdjustment) {
+    let date: Date
+    switch adjustment {
+      case .subtractingDays(let days):
+        date = Date.createByAdding(days: -days, to: Date())
+    }
+
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+    let newTimestamp = formatter.string(from: date)
+
+    let query = [
+      #"UPDATE \#(Self.schema)"#,
+      #"SET \#(col.rawValue)='\#(newTimestamp)'"#,
+      #"WHERE id='\#(id!.uuidString)';"#,
+    ].joined(separator: " ")
+
+    let task = Process()
+
+    task.executableURL = URL(fileURLWithPath: Environment.get("PSQL_PATH")!)
+    task.arguments = [
+      "-d", Environment.get("TEST_DATABASE_NAME")!,
+      "-c", query,
+    ]
+
+    let pipe = Pipe()
+    task.standardOutput = pipe
+    try? task.run()
+    pipe.fileHandleForReading.readDataToEndOfFile()
   }
 }

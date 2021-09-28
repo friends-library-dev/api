@@ -46,6 +46,8 @@ private func addMigrations(to app: Application) {
   app.migrations.add(CreateTokenScopes())
   app.migrations.add(CreateFreeOrderRequests())
   app.migrations.add(AddOrderRequestId())
+  app.migrations.add(CreateArtifactProductionVersion())
+  app.migrations.add(AddMutateArtifactProductionVersionScope())
 
   if Environment.get("SEED_DB") == "true" || app.environment == .testing {
     app.migrations.add(Seed())

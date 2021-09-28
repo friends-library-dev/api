@@ -113,6 +113,12 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("order", with: \.$order)
   }
 
+  Type(ArtifactProductionVersion.self) {
+    Field("id", at: \.id)
+    Field("version", at: \.version)
+    Field("createdAt", at: \.createdAt)
+  }
+
   Input(UpdateOrderInput.self) {
     InputField("id", at: \.id)
     InputField("printJobStatus", at: \.printJobStatus)
@@ -206,6 +212,8 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
     Field("getFreeOrderRequest", at: Resolver.getFreeOrderRequest) {
       Argument("id", at: \.id)
     }
+
+    Field("getLatestArtifactProductionVersion", at: Resolver.getLatestArtifactProductionVersion)
   }
 
   Mutation {
@@ -227,6 +235,10 @@ let AppSchema = try! Graphiti.Schema<Resolver, Request> {
 
     Field("createFreeOrderRequest", at: Resolver.createFreeOrderRequest) {
       Argument("input", at: \.input)
+    }
+
+    Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
+      Argument("revision", at: \.revision)
     }
   }
 

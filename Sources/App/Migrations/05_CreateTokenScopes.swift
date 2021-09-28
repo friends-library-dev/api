@@ -4,29 +4,29 @@ import Vapor
 struct CreateTokenScopes: Migration {
 
   func prepare(on database: Database) -> Future<Void> {
-    return database.enum("scopes")
-      .case("queryDownloads")
-      .case("mutateDownloads")
-      .case("queryOrders")
-      .case("mutateOrders")
+    return database.enum(TokenScope.M5.dbEnumName)
+      .case(TokenScope.M5.Scope.queryDownloads)
+      .case(TokenScope.M5.Scope.mutateDownloads)
+      .case(TokenScope.M5.Scope.queryOrders)
+      .case(TokenScope.M5.Scope.mutateOrders)
       .create()
       .flatMap { scopes in
-        database.schema("token_scopes")
+        database.schema(TokenScope.M5.tableName)
           .id()
           .field(
-            "token_id",
+            TokenScope.M5.tokenId,
             .uuid,
             .required,
-            .references("tokens", "id", onDelete: .cascade)
+            .references(Token.M4.tableName, "id", onDelete: .cascade)
           )
-          .field("scope", scopes, .required)
-          .field("created_at", .datetime, .required)
-          .unique(on: "token_id", "scope")
+          .field(TokenScope.M5.scope, scopes, .required)
+          .field(FieldKey.createdAt, .datetime, .required)
+          .unique(on: TokenScope.M5.tokenId, TokenScope.M5.scope)
           .create()
       }
   }
 
   func revert(on database: Database) -> Future<Void> {
-    return database.schema("token_scopes").delete()
+    return database.schema(TokenScope.M5.tableName).delete()
   }
 }

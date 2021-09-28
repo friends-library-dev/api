@@ -22,8 +22,6 @@ final class FreeOrderRequestResolverTests: GraphQLTestCase {
           aboutRequester
           addressStreet
           addressCity
-          addressStreet
-          addressCity
           addressState
           addressZip
           addressCountry
