@@ -12,8 +12,10 @@ final class ArtifactProductionVersionResolverTests: GraphQLTestCase {
 
   func testGetLatestRevision() throws {
     let latest = ArtifactProductionVersion.createFixture(on: app.db)
-    let older = ArtifactProductionVersion.createFixture(on: app.db)
-    older.adjustTimestamp(.createdAt, .subtractingDays(3))
+    #if os(macOS)
+      let older = ArtifactProductionVersion.createFixture(on: app.db)
+      older.adjustTimestamp(.createdAt, .subtractingDays(3))
+    #endif
 
     GraphQLTest(
       """

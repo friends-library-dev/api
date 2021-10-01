@@ -1,0 +1,57 @@
+name: basic-ci
+
+on: push
+
+env:
+  LOG_LEVEL: info
+  DATABASE_USERNAME: vapor_username
+  DATABASE_PASSWORD: vapor_password
+  TEST_DATABASE_NAME: vapor_database
+  SEED_DB: true
+  PG_DUMP_PATH: not-real
+  SENDGRID_API_KEY: not-real
+  SLACK_API_TOKEN: not-real
+  PSQL_PATH: /usr/local/bin/psql
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_HOST: postgres
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: vapor_username
+          POSTGRES_PASSWORD: vapor_password
+          POSTGRES_DB: vapor_database
+    container: swift:5.4-focal
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test
+
+  macos:
+    runs-on: macos-11
+    steps:
+      - name: Setup xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: 12.5
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Start postgres
+        # if this isn't reliable, switch back to
+        # https://gist.github.com/jaredh159/634285e52456fefc9f04fb2b4bd3af28
+        run: brew services start postgres; sleep 5 && pg_isready
+      - name: Create db user and db
+        run: |
+          psql --command="CREATE USER vapor_username PASSWORD 'vapor_password'" --command="\du" postgres
+          createdb --owner=vapor_username vapor_database
+      - name: Build
+        run: swift build
+      - name: Run tests
+        run: swift test
