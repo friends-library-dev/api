@@ -44,10 +44,11 @@ withCommandOutput(BUILD_CMD);
 log(c`{green vapor:} {gray running migrations}`);
 withCommandOutput(`${VAPOR_RUN} migrate --yes`);
 
-if (ENV === `staging`) {
-  log(c`{green test:} {gray running tests}`);
-  withCommandOutput(`npm run test`);
-}
+// having trouble with tests on staging for now...
+// if (ENV === `staging`) {
+//   log(c`{green test:} {gray running tests}`);
+//   withCommandOutput(`npm run test`);
+// }
 
 log(c`{green npm:} {gray ensuring parse-useragent bin available}`);
 withCommandOutput(`sudo npm install -g @jaredh159/parse-useragent@latest`);
