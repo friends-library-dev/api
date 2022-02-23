@@ -257,14 +257,14 @@ final class DownloadableFileTests: AppTestCase {
       (.paperback(type: .interior, volumeIndex: 0), "Journal--updated--(print)--v1.pdf"),
       (.paperback(type: .cover, volumeIndex: nil), "Journal--updated--cover.pdf"),
       (.paperback(type: .cover, volumeIndex: 0), "Journal--updated--cover--v1.pdf"),
-      (.audio(.m4b(.high)), "Journal--updated.m4b"),
-      (.audio(.m4b(.low)), "Journal--updated--lq.m4b"),
-      (.audio(.mp3s(.high)), "Journal--updated--mp3s.zip"),
-      (.audio(.mp3s(.low)), "Journal--updated--mp3s--lq.zip"),
-      (.audio(.mp3(quality: .high, multipartIndex: nil)), "Journal--updated.mp3"),
-      (.audio(.mp3(quality: .low, multipartIndex: nil)), "Journal--updated--lq.mp3"),
-      (.audio(.mp3(quality: .high, multipartIndex: 0)), "Journal--updated--pt1.mp3"),
-      (.audio(.mp3(quality: .low, multipartIndex: 0)), "Journal--updated--pt1--lq.mp3"),
+      (.audio(.m4b(.high)), "Journal.m4b"),
+      (.audio(.m4b(.low)), "Journal--lq.m4b"),
+      (.audio(.mp3s(.high)), "Journal--mp3s.zip"),
+      (.audio(.mp3s(.low)), "Journal--mp3s--lq.zip"),
+      (.audio(.mp3(quality: .high, multipartIndex: nil)), "Journal.mp3"),
+      (.audio(.mp3(quality: .low, multipartIndex: nil)), "Journal--lq.mp3"),
+      (.audio(.mp3(quality: .high, multipartIndex: 0)), "Journal--pt1.mp3"),
+      (.audio(.mp3(quality: .low, multipartIndex: 0)), "Journal--pt1--lq.mp3"),
       // podcast paths/urls are unique, tested in their own test function above ^^^
     ]
 

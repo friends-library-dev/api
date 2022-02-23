@@ -82,11 +82,11 @@ struct DownloadableFile: Encodable {
       case .paperback(.cover, let index):
         return "\(edition.filename)--cover\(index |> volumeFilenameSuffix).pdf"
       case .audio(.m4b(let quality)):
-        return "\(edition.filename)\(quality |> qualityFilenameSuffix).m4b"
+        return "\(edition.document.require().filename)\(quality |> qualityFilenameSuffix).m4b"
       case .audio(.mp3s(let quality)):
-        return "\(edition.filename)--mp3s\(quality |> qualityFilenameSuffix).zip"
+        return "\(edition.document.require().filename)--mp3s\(quality |> qualityFilenameSuffix).zip"
       case .audio(.mp3(let quality, let index)):
-        return "\(edition.filename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
+        return "\(edition.document.require().filename)\(index |> partFilenameSuffix)\(quality |> qualityFilenameSuffix).mp3"
       case .audio(.podcast):
         return "podcast.rss"
     }
