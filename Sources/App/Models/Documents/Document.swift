@@ -30,7 +30,7 @@ final class Document: Codable {
   var primaryEdition: Edition? {
     let allEditions = editions.require()
     return allEditions.first { $0.type == .updated } ??
-      allEditions.first { $0.type == .original } ??
+      allEditions.first { $0.type == .modernized } ??
       allEditions.first
   }
 
