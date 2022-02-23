@@ -90,8 +90,8 @@ private struct AppEdition: Codable {
     let isIntermediateTitle: Bool
     let isSequenced: Bool
     let hasNonSequenceTitle: Bool
-    let sequenceNumber: Int?
-    let nonSequenceTitle: String?
+    @EncodeNilAsNull var sequenceNumber: Int?
+    @EncodeNilAsNull var nonSequenceTitle: String?
   }
 
   let id: String
@@ -103,7 +103,7 @@ private struct AppEdition: Codable {
   let friend: Friend
   let ebook: Ebook
   let isMostModernized: Bool
-  let audio: Audio?
+  @EncodeNilAsNull var audio: Audio?
   let images: Images
   let chapters: [Chapter]
 }
@@ -176,4 +176,21 @@ private func toAppEdition(_ edition: Edition) -> AppEdition {
         nonSequenceTitle: chapter.nonSequenceTitle
       ) }
   )
+}
+
+@propertyWrapper
+struct EncodeNilAsNull<T>: Codable where T: Codable {
+  var wrappedValue: T?
+
+  init(wrappedValue: T?) {
+    self.wrappedValue = wrappedValue
+  }
+
+  func encode(to encoder: Encoder) throws {
+    var container = encoder.singleValueContainer()
+    switch wrappedValue {
+      case .some(let value): try container.encode(value)
+      case .none: try container.encodeNil()
+    }
+  }
 }
