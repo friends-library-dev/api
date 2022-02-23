@@ -4,6 +4,13 @@ import XCTest
 
 final class AsciidocTests: XCTestCase {
 
+  func testNonEntity160RomanNumeraled() {
+    XCTAssertEqual(
+      Asciidoc.htmlShortTitle("Epistles 133 &#8212; 160"),
+      "Epistles CXXXIII &#8212; CLX"
+    )
+  }
+
   func testHtmlTitleTurnsDoubleDashIntoEmdashEntity() throws {
     XCTAssertEqual(Asciidoc.htmlTitle("Foo -- bar"), "Foo &#8212; bar")
   }

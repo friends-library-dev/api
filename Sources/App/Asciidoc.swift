@@ -89,21 +89,23 @@ enum Asciidoc {
 
     // lol swift regexes... maybe look into https://github.com/crossroadlabs/Regex
     for (index, char) in title.enumerated() {
+      let nextIndex = title.index(title.startIndex, offsetBy: index + 1)
+      let nextChar: Character? = title.indices.contains(nextIndex) ? title[nextIndex] : nil
       switch (char.isNumber, number == nil, index == title.count - 1) {
         case (true, true, false):
           number = "\(char)"
         case (true, false, false):
           number! += "\(char)"
         case (true, true, true):
-          shortened += toRoman("\(char)")
+          shortened += toRoman("\(char)", nextChar)
         case (false, true, _):
           shortened += "\(char)"
         case (false, false, _):
-          shortened += toRoman(number) + "\(char)"
+          shortened += toRoman(number, nextChar) + "\(char)"
           number = nil
         case (true, false, true):
           number! += "\(char)"
-          shortened += toRoman(number)
+          shortened += toRoman(number, nextChar)
           number = nil
       }
     }
@@ -111,10 +113,10 @@ enum Asciidoc {
   }
 }
 
-private func toRoman(_ string: String?) -> String {
+private func toRoman(_ string: String?, _ nextChar: Character?) -> String {
   guard let string = string else { return "" }
   if let int = Int(string),
-     int < 1000, int != 160,
+     int < 1000, int != 160 || nextChar != ";",
      let rn = try? RomanNumeral(from: int) {
     return rn.stringValue
   }
