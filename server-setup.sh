@@ -90,7 +90,7 @@ sudo ufw enable
 # make /etc/nginx/sites-available/default look approximately like this:
 ```
 server {
-  server_name api-graphql.friendslibrary.com;
+  server_name api.friendslibrary.com;
   location / {
       proxy_pass http://127.0.0.1:8080;
       proxy_http_version 1.1;
@@ -108,7 +108,7 @@ server {
 }
 
 server {
-  server_name api-graphql--staging.friendslibrary.com;
+  server_name api--staging.friendslibrary.com;
   location / {
       proxy_pass http://127.0.0.1:8090;
       proxy_http_version 1.1;
@@ -129,23 +129,13 @@ server {
 # then install and run let's encrypt, letting it finish the config
 sudo apt install -y certbot python3-certbot-nginx
 # choose 2 for https redirect
-sudo certbot --nginx -d api-graphql.friendslibrary.com
-sudo certbot --nginx -d api-graphql--staging.friendslibrary.com
+sudo certbot --nginx -d api.friendslibrary.com
+sudo certbot --nginx -d api--staging.friendslibrary.com
 sudo systemctl reload nginx
 
 # install swift
-# get correct link from  https://swift.org/download/#releases
-wget https://swift.org/builds/swift-5.4.2-release/ubuntu2004/swift-5.4.2-RELEASE/swift-5.4.2-RELEASE-ubuntu20.04.tar.gz
-tar xzf swift-5.4.2-RELEASE-ubuntu20.04.tar.gz
-sudo mkdir /swift
-sudo mv swift-5.4.2-RELEASE-ubuntu20.04 /swift/5.4.2
-sudo ln -s /swift/5.4.2/usr/bin/swift /usr/bin/swift
-# check install
-swift --version
-rm swift-5.4.2-RELEASE-ubuntu20.04.tar.gz
-# install swift deps: (from swift.org/downloads)
-sudo apt-get install -y binutils git gnupg2 libc6-dev libcurl4 libedit2 libgcc-9-dev libpython2.7 libsqlite3-0 libstdc++-9-dev libxml2 libz3-dev pkg-config tzdata zlib1g-dev
-
+# follow latest directions from swift website, i currently have
+# swift 5.3.3 installed in /usr/swift/bin
 
 # install vapor deps 
 sudo apt-get install -y make openssl libssl-dev libsqlite3-dev
