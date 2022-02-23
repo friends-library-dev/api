@@ -56,6 +56,11 @@ enum Asciidoc {
           with: "",
           options: .regularExpression
         )
+        .replacingOccurrences(
+          of: #"^Vida "#,
+          with: "La Vida ",
+          options: .regularExpression
+        )
   }
 
   static func utf8ShortTitle(_ title: String) -> String {

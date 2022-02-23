@@ -57,6 +57,7 @@ final class AsciidocTests: XCTestCase {
       ("El Foobar7890123456789012345", .es, "Foobar7890123456789012345"),
       ("El Camino Foobar7890123456789012345", .es, "El Camino Foobar7890123456789012345"),
       ("La Vida Foobar7890123456789012345", .es, "La Vida Foobar7890123456789012345"),
+      ("Selección de la Vida de John Crook", .es, "La Vida de John Crook (Selección)"),
     ]
 
     for (input, lang, expected) in cases {
