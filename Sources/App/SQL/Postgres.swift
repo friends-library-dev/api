@@ -143,7 +143,7 @@ private func nullable(_ string: String?) -> String {
     case nil:
       return "NULL"
     case .some(let string):
-      return "'\(string)'"
+      return "'\(string.replacingOccurrences(of: "'", with: "''"))'"
   }
 }
 
