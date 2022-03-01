@@ -1,6 +1,15 @@
 import Vapor
 
 extension Env {
+  enum Mode: Equatable {
+    case prod
+    case dev
+    case staging
+    case test
+  }
+
+  static var mode = Mode.dev
+
   static let PG_DUMP_PATH = get("PG_DUMP_PATH")!
   static let SENDGRID_API_KEY = get("SENDGRID_API_KEY")!
   static let SLACK_API_TOKEN_WORKSPACE_MAIN = get("SLACK_API_TOKEN_WORKSPACE_MAIN")!
@@ -22,4 +31,34 @@ extension Env {
   static let SELF_URL = get("SELF_URL")!
   static let WEBSITE_URL_EN = get("WEBSITE_URL_EN")!
   static let WEBSITE_URL_ES = get("WEBSITE_URL_ES")!
+}
+
+extension Env.Mode {
+  init(from env: Env) {
+    switch env.name {
+      case "production":
+        self = .prod
+      case "development":
+        self = .dev
+      case "staging":
+        self = .staging
+      case "testing":
+        self = .test
+      default:
+        fatalError("Unexpected environment: \(env.name)")
+    }
+  }
+
+  var name: String {
+    switch self {
+      case .prod:
+        return "production"
+      case .dev:
+        return "development"
+      case .staging:
+        return "staging"
+      case .test:
+        return "testing"
+    }
+  }
 }

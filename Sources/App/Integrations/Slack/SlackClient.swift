@@ -28,6 +28,8 @@ private func send(_ slack: Slack.Message) async {
       Current.logger.debug("Sent a slack to `\(slack.channel)`: \(slack.text)")
   }
 
+  guard Env.mode != .dev else { return }
+
   let safeText = slack.text.dropLast(max(0, slack.text.count - MAX_SAFE_SLACK_MSG_LENGTH))
 
   do {
@@ -84,6 +86,9 @@ extension Slack.Channel {
   }
 
   var token: String {
+    if Env.mode == .staging {
+      return Env.SLACK_API_TOKEN_WORKSPACE_BOT
+    }
     switch self {
       case .debug, .audioDownloads:
         return Env.SLACK_API_TOKEN_WORKSPACE_BOT

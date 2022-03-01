@@ -12,8 +12,9 @@ typealias NoArgs = Graphiti.NoArguments
 
 public func configure(_ app: Application) throws {
   app.middleware.use(corsMiddleware(app), at: .beginning)
+  Env.mode = .init(from: app.environment)
 
-  let dbPrefix = app.environment == .testing ? "TEST_" : ""
+  let dbPrefix = Env.mode == .test ? "TEST_" : ""
   app.databases.use(
     .postgres(
       hostname: Env.get("DATABASE_HOST") ?? "localhost",
@@ -41,15 +42,15 @@ public func configure(_ app: Application) throws {
     .grouped(UserAuthenticator())
     .register(graphQLSchema: appSchema, withResolver: Resolver())
 
-  if app.environment == .production {
+  if Env.mode == .prod {
     try configureScheduledJobs(app)
   }
 
-  if app.environment != .production {
+  if Env.mode != .prod {
     try app.autoMigrate().wait()
   }
 
-  app.logger.notice("App environment is `\(app.environment.name)`")
+  app.logger.notice("App environment is `\(Env.mode.name)`")
 }
 
 private func addMigrations(to app: Application) {
@@ -82,7 +83,7 @@ private func addMigrations(to app: Application) {
   app.migrations.add(AddTokenUses())
   app.migrations.add(AddOrderFeesColumn())
 
-  if Env.get("SEED_DB") == "true" || app.environment == .testing {
+  if Env.get("SEED_DB") == "true" || Env.mode == .test {
     app.migrations.add(Seed())
   }
 }
@@ -114,7 +115,7 @@ private func configureScheduledJobs(_ app: Application) throws {
 
 private func corsMiddleware(_ app: Application) -> CORSMiddleware {
   let corsConfiguration = CORSMiddleware.Configuration(
-    allowedOrigin: app.environment == .production
+    allowedOrigin: Env.mode == .prod
       ? .any([
         "https://admin.friendslibrary.com",
         "https://www.friendslibrary.com",
