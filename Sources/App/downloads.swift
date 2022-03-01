@@ -147,9 +147,14 @@ private func unUrl(_ referrer: String) -> String {
 }
 
 private func shouldQueryLocation(_ format: DownloadableFile.Format) -> Bool {
+  guard Env.mode == .prod || Env.mode == .test else {
+    return false
+  }
+
   guard case .audio(.podcast) = format else {
     return true
   }
+
   // sample only 5% of podcast request, to stay in api rate limits without paid acct
   return Int.random(in: 0 ... 100) < 5
 }
