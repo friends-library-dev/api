@@ -82,7 +82,7 @@ func downloadFileRouteHandler(req: Request) async throws -> Response {
     return try await logAndRedirect(
       file: try await DownloadableFile(logPath: path),
       userAgent: req.headers.first(name: .userAgent) ?? "",
-      ipAddress: req.remoteAddress?.ipAddress,
+      ipAddress: req.ipAddress,
       referrer: req.headers.first(name: .referer)
     )
   } catch {
