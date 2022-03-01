@@ -20,6 +20,7 @@ extension AppSchema {
       Field("lang", at: \.lang)
       Field("humanDurationClock", at: \.humanDurationClock)
       Field("humanDurationAbbrev", at: \.humanDurationAbbrev)
+      Field("isPublished", at: \.isPublished)
       Field("files", at: \.files)
       Field("edition", with: \.edition)
       Field("parts", with: \.parts)

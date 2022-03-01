@@ -138,7 +138,7 @@ private func toAppEdition(_ edition: Edition) -> AppEdition {
       numPages: impression.paperbackVolumes.reduce(0, +)
     ),
     isMostModernized: document.primaryEdition! == edition,
-    audio: audio != nil ? .init(
+    audio: audio?.isPublished == true ? .init(
       reader: audio!.reader,
       totalDuration: audio!.parts.require().map(\.duration).reduce(0, +).rawValue,
       publishedDate: audio!.createdAt.isoString,

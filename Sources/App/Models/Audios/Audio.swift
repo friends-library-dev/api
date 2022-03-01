@@ -29,6 +29,12 @@ final class Audio: Codable {
     AudioUtil.humanDuration(partDurations: parts.require().map(\.duration), style: .abbrev(lang))
   }
 
+  var isPublished: Bool {
+    // detect intermediate state between when we have created the audio
+    // row in the database and when the cli app finishes processing all the parts
+    m4bSizeHq != 0 && parts.require().count > 0
+  }
+
   init(
     id: Id = .init(),
     editionId: Edition.Id,
