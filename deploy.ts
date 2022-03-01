@@ -33,7 +33,15 @@ inDeployDir(`test -d .git || git clone ${REPO_URL} .`);
 
 log(c`{green git:} {gray updating repo at} {magenta ${DEPLOY_DIR}}`);
 inDeployDir(`git reset --hard HEAD`);
+inDeployDir(`git checkout master`);
 inDeployDir(`git pull origin master`);
+
+if (ENV === `staging` && process.argv.includes(`--branch`)) {
+  const branch = process.argv[process.argv.indexOf(`--branch`) + 1];
+  log(c`{green git:} {gray checking out branch} {magenta ${branch}}`);
+  inDeployDir(`git fetch`);
+  inDeployDir(`git checkout -b ${branch} origin/${branch}`);
+}
 
 log(c`{green env:} {gray copying .env file to} {magenta ${DEPLOY_DIR}}`);
 exec.exit(`scp ./.env.${ENV} ${HOST}:${DEPLOY_DIR}/.env`);
