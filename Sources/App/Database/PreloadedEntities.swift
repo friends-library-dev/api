@@ -13,6 +13,7 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
   var editionChapters: [EditionChapter.Id: EditionChapter]
   var audios: [Audio.Id: Audio]
   var audioParts: [AudioPart.Id: AudioPart]
+  var isbns: [Isbn.Id: Isbn]
   var legacyRestAppEditionsDataEnglish: Data?
   var legacyRestAppEditionsDataSpanish: Data?
   var legacyRestAppAudiosDataEnglish: Data?
@@ -31,7 +32,8 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     editionImpressions: [EditionImpression.Id: EditionImpression] = [:],
     editionChapters: [EditionChapter.Id: EditionChapter] = [:],
     audios: [Audio.Id: Audio] = [:],
-    audioParts: [AudioPart.Id: AudioPart] = [:]
+    audioParts: [AudioPart.Id: AudioPart] = [:],
+    isbns: [Isbn.Id: Isbn] = [:]
   ) {
     self.friends = friends
     self.friendQuotes = friendQuotes
@@ -45,6 +47,7 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     self.editionChapters = editionChapters
     self.audios = audios
     self.audioParts = audioParts
+    self.isbns = isbns
 
     for friend in friends.values {
       friend.documents = .loaded([])
@@ -113,10 +116,18 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
       edition.chapters = .loaded([])
       edition.impression = .loaded(nil)
       edition.audio = .loaded(nil)
+      edition.isbn = .loaded(nil)
 
       if let document = documents[edition.documentId] {
         document.editions.push(edition)
         edition.document = .loaded(document)
+      }
+    }
+
+    for (_, isbn) in isbns {
+      if let editionId = isbn.editionId, let edition = editions[editionId] {
+        edition.isbn = .loaded(isbn)
+        isbn.edition = .loaded(edition)
       }
     }
 
@@ -163,6 +174,7 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     editionChapters = [:]
     audios = [:]
     audioParts = [:]
+    isbns = [:]
     legacyRestAppEditionsDataEnglish = nil
     legacyRestAppEditionsDataSpanish = nil
     legacyRestAppAudiosDataEnglish = nil
@@ -181,7 +193,8 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
     editionImpressions: [EditionImpression] = [],
     editionChapters: [EditionChapter] = [],
     audios: [Audio] = [],
-    audioParts: [AudioPart] = []
+    audioParts: [AudioPart] = [],
+    isbns: [Isbn] = []
   ) {
     self.init(
       friends: toDict(friends),
@@ -195,7 +208,8 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
       editionImpressions: toDict(editionImpressions),
       editionChapters: toDict(editionChapters),
       audios: toDict(audios),
-      audioParts: toDict(audioParts)
+      audioParts: toDict(audioParts),
+      isbns: toDict(isbns)
     )
   }
 
@@ -225,6 +239,8 @@ actor PreloadedEntities: SQLQuerying, InMemoryDatabase {
         return audios as! [M.IdValue: M]
       case AudioPart.tableName:
         return audioParts as! [M.IdValue: M]
+      case Isbn.tableName:
+        return isbns as! [M.IdValue: M]
       default:
         throw PreloadedEntitiesError.unsupportedModelType(Model.tableName)
     }

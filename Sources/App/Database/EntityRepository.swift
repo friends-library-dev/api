@@ -42,6 +42,7 @@ class LiveEntityRepository: EntityRepository {
     async let editionChapters = findAll(EditionChapter.self)
     async let audios = findAll(Audio.self)
     async let audioParts = findAll(AudioPart.self)
+    async let isbns = findAll(Isbn.self)
 
     let loaded = PreloadedEntities(
       friends: try await friends,
@@ -55,7 +56,8 @@ class LiveEntityRepository: EntityRepository {
       editionImpressions: try await editionImpressions,
       editionChapters: try await editionChapters,
       audios: try await audios,
-      audioParts: try await audioParts
+      audioParts: try await audioParts,
+      isbns: try await isbns
     )
 
     entities = loaded
@@ -98,7 +100,8 @@ class MockEntityRepository: EntityRepository {
       editionImpressions: db.editionImpressions,
       editionChapters: db.editionChapters,
       audios: db.audios,
-      audioParts: db.audioParts
+      audioParts: db.audioParts,
+      isbns: db.isbns
     )
 
     entities = loaded

@@ -16,6 +16,7 @@ enum PreloadedEntityType {
   case editionChapter(EditionChapter.Type)
   case audio(Audio.Type)
   case audioPart(AudioPart.Type)
+  case isbn(Isbn.Type)
 }
 
 protocol ApiModel: Codable, Equatable {

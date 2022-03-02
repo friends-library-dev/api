@@ -4,6 +4,9 @@ import Tagged
 
 extension Isbn: ApiModel {
   typealias Id = Tagged<Isbn, UUID>
+  static var preloadedEntityType: PreloadedEntityType? {
+    .isbn(Self.self)
+  }
 }
 
 extension Isbn: DuetModel {
