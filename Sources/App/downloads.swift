@@ -76,6 +76,8 @@ func logAndRedirect(
 }
 
 func downloadFileRouteHandler(req: Request) async throws -> Response {
+  struct RefererQuery: Content { let referer: String? }
+  let query = try? req.query.decode(RefererQuery.self)
   var path = req.url.path
   path.removeFirst()
   do {
@@ -83,7 +85,7 @@ func downloadFileRouteHandler(req: Request) async throws -> Response {
       file: try await DownloadableFile(logPath: path),
       userAgent: req.headers.first(name: .userAgent) ?? "",
       ipAddress: req.ipAddress,
-      referrer: req.headers.first(name: .referer)
+      referrer: query?.referer ?? req.headers.first(name: .referer)
     )
   } catch {
     var errorMsg = "Failed to resolve Downloadable file from path: \(path), error: \(error)"
