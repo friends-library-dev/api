@@ -32,7 +32,7 @@ final class Audio: Codable {
   var isPublished: Bool {
     // detect intermediate state between when we have created the audio
     // row in the database and when the cli app finishes processing all the parts
-    m4bSizeHq != 0 && parts.require().count > 0
+    m4bSizeHq != 0 && parts.require().filter(\.isPublished).count > 0
   }
 
   init(

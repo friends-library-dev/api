@@ -142,7 +142,10 @@ private func toAppEdition(_ edition: Edition) -> AppEdition {
       reader: audio!.reader,
       totalDuration: audio!.parts.require().map(\.duration).reduce(0, +).rawValue,
       publishedDate: audio!.createdAt.isoString,
-      parts: audio!.parts.require().sorted { $0.order < $1.order }.enumerated()
+      parts: audio!.parts.require()
+        .filter(\.isPublished)
+        .sorted { $0.order < $1.order }
+        .enumerated()
         .map { index, part in
           .init(
             editionId: "\(document.id.lowercased)--\(edition.type)",

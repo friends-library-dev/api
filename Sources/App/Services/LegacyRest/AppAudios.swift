@@ -79,15 +79,19 @@ private func toAppAudio(_ audio: Audio) -> AppAudio {
     artwork: edition.images.square.w1400.url.absoluteString,
     description: document.description,
     shortDescription: document.partialDescription,
-    parts: parts.sorted { $0.order < $1.order }.enumerated().map { index, part in .init(
-      audioId: "\(document.id.lowercased)--\(edition.type)",
-      index: index,
-      title: part.title,
-      duration: part.duration.rawValue,
-      size: part.mp3SizeHq.rawValue,
-      sizeLq: part.mp3SizeLq.rawValue,
-      url: part.mp3File.hq.sourceUrl.absoluteString,
-      urlLq: part.mp3File.lq.sourceUrl.absoluteString
-    ) }
+    parts: parts
+      .sorted { $0.order < $1.order }
+      .filter(\.isPublished)
+      .enumerated()
+      .map { index, part in .init(
+        audioId: "\(document.id.lowercased)--\(edition.type)",
+        index: index,
+        title: part.title,
+        duration: part.duration.rawValue,
+        size: part.mp3SizeHq.rawValue,
+        sizeLq: part.mp3SizeLq.rawValue,
+        url: part.mp3File.hq.sourceUrl.absoluteString,
+        urlLq: part.mp3File.lq.sourceUrl.absoluteString
+      ) }
   )
 }

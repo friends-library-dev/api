@@ -18,6 +18,13 @@ final class AudioPart: Codable {
 
   var audio = Parent<Audio>.notLoaded
 
+  var isPublished: Bool {
+    // detect intermediate state between when we have created the audio part row
+    // in the database (via web gui), but have not finished processing the new
+    // audio part via the CLI command
+    mp3SizeHq != 0
+  }
+
   init(
     id: Id = .init(),
     audioId: Audio.Id,

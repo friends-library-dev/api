@@ -18,6 +18,7 @@ extension AppSchema {
       Field("externalIdLq", at: \.externalIdLq.rawValue)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("isPublished", at: \.isPublished)
       Field("mp3File", at: \.mp3File)
       Field("audio", with: \.audio)
     }
