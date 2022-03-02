@@ -50,6 +50,9 @@ final class SendTrackingEmailsTests: AppTestCase {
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(retrieved.printJobStatus, .canceled)
     XCTAssertEqual(sent.emails.count, 0)
-    XCTAssertEqual(sent.slacks, [.error("order \(order.id) was CANCELED!")])
+    XCTAssertEqual(
+      sent.slacks,
+      [.error("Order \(order.id.lowercased) was found in status `CANCELED`!")]
+    )
   }
 }

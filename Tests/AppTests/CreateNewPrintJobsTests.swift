@@ -26,7 +26,7 @@ final class CreateNewPrintJobTests: AppTestCase {
     XCTAssertEqual(created.count, 1)
     XCTAssertEqual(updated.printJobId, 33)
     XCTAssertEqual(updated.printJobStatus, .pending)
-    XCTAssertEqual(sent.slacks, [.order("Created print job 33 for order \(order.id)")])
+    XCTAssertEqual(sent.slacks, [.order("Created print job 33 for order \(order.id.lowercased)")])
   }
 
   func testUnexpectedLuluStatusLogsErrorWithoutUpdatingOrder() async throws {
@@ -41,7 +41,7 @@ final class CreateNewPrintJobTests: AppTestCase {
     let retrieved = try await Current.db.find(order.id)
     XCTAssertEqual(
       sent.slacks,
-      [.error("Unexpected print job status ERROR for order \(order.id)")]
+      [.error("Unexpected print job status `ERROR` for order \(order.id.lowercased)")]
     )
     XCTAssertEqual(retrieved.printJobStatus, .presubmit)
     XCTAssertEqual(retrieved.printJobId, nil)

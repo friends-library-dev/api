@@ -25,16 +25,16 @@ enum OrderPrintJobCoordinator {
         let job = try await createPrintJob(order)
         if job.status.name != .created {
           await slackError(
-            "Unexpected print job status \(job.status.name.rawValue) for order \(order.id)"
+            "Unexpected print job status `\(job.status.name.rawValue)` for order \(order |> slackLink)"
           )
         } else {
           order.printJobStatus = .pending
           order.printJobId = .init(rawValue: Int(job.id))
           updated.append(order)
-          await slackOrder("Created print job \(job.id) for order \(order.id)")
+          await slackOrder("Created print job \(job |> slackLink) for order \(order |> slackLink)")
         }
       } catch {
-        await slackError("Error creating print job for order \(order.id): \(error)")
+        await slackError("Error creating print job for order \(order |> slackLink): \(error)")
       }
     }
 
@@ -55,7 +55,7 @@ enum OrderPrintJobCoordinator {
     var updated: [Order] = []
     for order in orders {
       guard let printJob = printJobs.first(where: order |> belongsToPrintJob) else {
-        await slackError("Failed to find print job belonging to order \(order.id)")
+        await slackError("Failed to find print job belonging to order \(order |> slackLink)")
         continue
       }
 
@@ -64,13 +64,15 @@ enum OrderPrintJobCoordinator {
         case .created:
           break
         case .unpaid:
-          await slackError("Print job \(printJob.id) found in state \(status)")
+          await slackError("Print job \(printJob |> slackLink) found in state `\(status)`!")
         case .rejected,
              .canceled,
              .error:
           order.printJobStatus = .rejected
           updated.append(order)
-          await slackError("Print job \(printJob.id) for order \(order.id) rejected")
+          await slackError(
+            "Print job \(printJob |> slackLink) for order \(order.id.lowercased) rejected"
+          )
         case .paymentInProgress,
              .productionReady,
              .productionDelayed,
@@ -78,7 +80,9 @@ enum OrderPrintJobCoordinator {
              .inProduction:
           order.printJobStatus = .accepted
           updated.append(order)
-          await slackOrder("Verified acceptance of print job \(printJob.id), status: \(status)")
+          await slackOrder(
+            "Verified acceptance of print job \(printJob |> slackLink), status: `\(status)`"
+          )
       }
     }
 
@@ -93,23 +97,23 @@ enum OrderPrintJobCoordinator {
     var updated: [Order] = []
     for order in orders {
       guard let printJob = printJobs.first(where: order |> belongsToPrintJob) else {
-        await slackError("Failed to find print job belonging to order \(order.id)")
+        await slackError("Failed to find print job belonging to order \(order |> slackLink)")
         continue
       }
 
       let status = printJob.status.name.rawValue
       switch printJob.status.name {
         case .unpaid:
-          await slackError("Print job \(printJob.id) found in state \(status)")
+          await slackError("Print job \(printJob |> slackLink) found in status `\(status)`!")
         case .canceled, .rejected:
           order.printJobStatus = printJob.status.name == .canceled ? .canceled : .rejected
           updated.append(order)
-          await slackError("order \(order.id) was \(status)!")
+          await slackError("Order \(order |> slackLink) was found in status `\(status)`!")
         case .shipped:
           order.printJobStatus = .shipped
           updated.append(order)
           await sendOrderShippedEmail(order, printJob)
-          await slackOrder("Order \(order.id.lowercased) shipped")
+          await slackOrder("Order \(order |> slackLink) shipped")
         case .paymentInProgress,
              .productionReady,
              .productionDelayed,
@@ -190,4 +194,18 @@ private func belongsToPrintJob(_ order: Order) -> (Lulu.Api.PrintJob) -> Bool {
   { printJob in
     printJob.id == Int64(order.printJobId?.rawValue ?? -1)
   }
+}
+
+private func slackLink(_ order: Order) -> String {
+  guard Env.mode != .test else { return order.id.lowercased }
+  let staging = Env.mode == .staging ? "--staging" : ""
+  let url = "https://admin\(staging).friendslibrary.com/orders/\(order.id.lowercased)"
+  return Slack.Message.link(to: url, withText: "\(order.id.lowercased)")
+}
+
+private func slackLink(_ printJob: Lulu.Api.PrintJob) -> String {
+  guard Env.mode != .test else { return "\(printJob.id)" }
+  let sandbox = Env.mode == .staging ? "sandbox." : ""
+  let url = "https://developers.\(sandbox)lulu.com/print-jobs/detail/\(printJob.id)"
+  return Slack.Message.link(to: url, withText: "\(printJob.id)")
 }

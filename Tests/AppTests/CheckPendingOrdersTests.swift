@@ -28,7 +28,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     XCTAssertEqual(retrieved.printJobStatus, .accepted)
     XCTAssertEqual(
       sent.slacks,
-      [.order("Verified acceptance of print job 33, status: PRODUCTION_DELAYED")]
+      [.order("Verified acceptance of print job 33, status: `PRODUCTION_DELAYED`")]
     )
   }
 
@@ -81,7 +81,7 @@ final class CheckPendingOrdersTests: AppTestCase {
     XCTAssertEqual(retrieved.printJobStatus, .rejected)
     XCTAssertEqual(
       sent.slacks,
-      [.error("Print job 33 for order \(order.id) rejected")]
+      [.error("Print job 33 for order \(order.id.lowercased) rejected")]
     )
   }
 }
