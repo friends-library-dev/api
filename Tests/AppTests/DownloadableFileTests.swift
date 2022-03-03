@@ -135,7 +135,7 @@ final class DownloadableFileTests: AppTestCase {
     XCTAssertEqual(sent.slacks[0].channel, .audioDownloads)
     XCTAssertEqual(
       sent.slacks[0].text,
-      "Download: `\(edition.directoryPath)`, device: `non-mobile`, from url: `[friendslibrary.com]`, location: `City / Region / Postal / CountryName` https://www.google.com/maps/@123.456,-123.456,14z"
+      "Download: `\(edition.directoryPath)/Journal--pt4.mp3`, device: `non-mobile`, from url: `[friendslibrary.com]`, location: `City / Region / Postal / CountryName` https://www.google.com/maps/@123.456,-123.456,14z"
     )
   }
 

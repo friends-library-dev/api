@@ -117,7 +117,7 @@ private func slackDownload(
   }
 
   await Current.slackClient.send(.init(
-    text: "Download: `\(file.edition.directoryPath)`, device: `\(device.slackSummary)`\(from)\(place)",
+    text: "Download: `\(file.edition.directoryPath)/\(file.filename)`, device: `\(device.slackSummary)`\(from)\(place)",
     channel: file.format.slackChannel
   ))
 }
