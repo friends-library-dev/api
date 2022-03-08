@@ -52,7 +52,7 @@ extension AppSchema {
     }
   }
 
-  static var getFriendResidenceDuration: AppField<FriendResidenceDuration, IdentifyEntityArgs> {
+  static var getFriendResidenceDuration: AppField<FriendResidenceDuration, IdentifyEntity> {
     Field("getFriendResidenceDuration", at: Resolver.getFriendResidenceDuration) {
       Argument("id", at: \.id)
     }
@@ -63,7 +63,7 @@ extension AppSchema {
   }
 
   static var createFriendResidenceDuration: AppField<
-    FriendResidenceDuration,
+    IdentifyEntity,
     InputArgs<CreateFriendResidenceDurationInput>
   > {
     Field("createFriendResidenceDuration", at: Resolver.createFriendResidenceDuration) {
@@ -72,7 +72,7 @@ extension AppSchema {
   }
 
   static var createFriendResidenceDurations: AppField<
-    [FriendResidenceDuration],
+    [IdentifyEntity],
     InputArgs<[CreateFriendResidenceDurationInput]>
   > {
     Field("createFriendResidenceDurations", at: Resolver.createFriendResidenceDurations) {
@@ -98,7 +98,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteFriendResidenceDuration: AppField<FriendResidenceDuration, IdentifyEntityArgs> {
+  static var deleteFriendResidenceDuration: AppField<FriendResidenceDuration, IdentifyEntity> {
     Field("deleteFriendResidenceDuration", at: Resolver.deleteFriendResidenceDuration) {
       Argument("id", at: \.id)
     }

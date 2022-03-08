@@ -181,6 +181,10 @@ extension DuetModel where ColumnName: RawRepresentable, ColumnName.RawValue == S
 
 extension DuetModel where IdValue: RawRepresentable, IdValue.RawValue == UUID {
   var uuidId: UUID { id.rawValue }
+
+  var identity: IdentifyEntity {
+    .init(id: id.rawValue)
+  }
 }
 
 extension Array where Element: DuetModel {

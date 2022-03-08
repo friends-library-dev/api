@@ -48,7 +48,7 @@ extension AppSchema {
     }
   }
 
-  static var getRelatedDocument: AppField<RelatedDocument, IdentifyEntityArgs> {
+  static var getRelatedDocument: AppField<RelatedDocument, IdentifyEntity> {
     Field("getRelatedDocument", at: Resolver.getRelatedDocument) {
       Argument("id", at: \.id)
     }
@@ -59,7 +59,7 @@ extension AppSchema {
   }
 
   static var createRelatedDocument: AppField<
-    RelatedDocument,
+    IdentifyEntity,
     InputArgs<CreateRelatedDocumentInput>
   > {
     Field("createRelatedDocument", at: Resolver.createRelatedDocument) {
@@ -68,7 +68,7 @@ extension AppSchema {
   }
 
   static var createRelatedDocuments: AppField<
-    [RelatedDocument],
+    [IdentifyEntity],
     InputArgs<[CreateRelatedDocumentInput]>
   > {
     Field("createRelatedDocuments", at: Resolver.createRelatedDocuments) {
@@ -94,7 +94,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteRelatedDocument: AppField<RelatedDocument, IdentifyEntityArgs> {
+  static var deleteRelatedDocument: AppField<RelatedDocument, IdentifyEntity> {
     Field("deleteRelatedDocument", at: Resolver.deleteRelatedDocument) {
       Argument("id", at: \.id)
     }

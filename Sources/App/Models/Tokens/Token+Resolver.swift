@@ -17,7 +17,7 @@ extension Resolver {
 // below auto-generated
 
 extension Resolver {
-  func getToken(req: Req, args: IdentifyEntityArgs) throws -> Future<Token> {
+  func getToken(req: Req, args: IdentifyEntity) throws -> Future<Token> {
     try req.requirePermission(to: .queryTokens)
     return future(of: Token.self, on: req.eventLoop) {
       try await Current.db.find(Token.self, byId: args.id)
@@ -34,20 +34,20 @@ extension Resolver {
   func createToken(
     req: Req,
     args: InputArgs<AppSchema.CreateTokenInput>
-  ) throws -> Future<Token> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateTokens)
-    return future(of: Token.self, on: req.eventLoop) {
-      try await Current.db.create(Token(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(Token(args.input)).identity
     }
   }
 
   func createTokens(
     req: Req,
     args: InputArgs<[AppSchema.CreateTokenInput]>
-  ) throws -> Future<[Token]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateTokens)
-    return future(of: [Token].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Token.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(Token.init)).map(\.identity)
     }
   }
 
@@ -71,7 +71,7 @@ extension Resolver {
     }
   }
 
-  func deleteToken(req: Req, args: IdentifyEntityArgs) throws -> Future<Token> {
+  func deleteToken(req: Req, args: IdentifyEntity) throws -> Future<Token> {
     try req.requirePermission(to: .mutateTokens)
     return future(of: Token.self, on: req.eventLoop) {
       try await Current.db.delete(Token.self, byId: args.id)

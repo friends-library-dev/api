@@ -41,7 +41,7 @@ extension AppSchema {
     }
   }
 
-  static var getTokenScope: AppField<TokenScope, IdentifyEntityArgs> {
+  static var getTokenScope: AppField<TokenScope, IdentifyEntity> {
     Field("getTokenScope", at: Resolver.getTokenScope) {
       Argument("id", at: \.id)
     }
@@ -51,13 +51,13 @@ extension AppSchema {
     Field("getTokenScopes", at: Resolver.getTokenScopes)
   }
 
-  static var createTokenScope: AppField<TokenScope, InputArgs<CreateTokenScopeInput>> {
+  static var createTokenScope: AppField<IdentifyEntity, InputArgs<CreateTokenScopeInput>> {
     Field("createTokenScope", at: Resolver.createTokenScope) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createTokenScopes: AppField<[TokenScope], InputArgs<[CreateTokenScopeInput]>> {
+  static var createTokenScopes: AppField<[IdentifyEntity], InputArgs<[CreateTokenScopeInput]>> {
     Field("createTokenScopes", at: Resolver.createTokenScopes) {
       Argument("input", at: \.input)
     }
@@ -75,7 +75,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteTokenScope: AppField<TokenScope, IdentifyEntityArgs> {
+  static var deleteTokenScope: AppField<TokenScope, IdentifyEntity> {
     Field("deleteTokenScope", at: Resolver.deleteTokenScope) {
       Argument("id", at: \.id)
     }

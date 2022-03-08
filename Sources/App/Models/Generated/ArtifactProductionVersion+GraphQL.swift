@@ -41,7 +41,7 @@ extension AppSchema {
     }
   }
 
-  static var getArtifactProductionVersion: AppField<ArtifactProductionVersion, IdentifyEntityArgs> {
+  static var getArtifactProductionVersion: AppField<ArtifactProductionVersion, IdentifyEntity> {
     Field("getArtifactProductionVersion", at: Resolver.getArtifactProductionVersion) {
       Argument("id", at: \.id)
     }
@@ -52,7 +52,7 @@ extension AppSchema {
   }
 
   static var createArtifactProductionVersion: AppField<
-    ArtifactProductionVersion,
+    IdentifyEntity,
     InputArgs<CreateArtifactProductionVersionInput>
   > {
     Field("createArtifactProductionVersion", at: Resolver.createArtifactProductionVersion) {
@@ -61,7 +61,7 @@ extension AppSchema {
   }
 
   static var createArtifactProductionVersions: AppField<
-    [ArtifactProductionVersion],
+    [IdentifyEntity],
     InputArgs<[CreateArtifactProductionVersionInput]>
   > {
     Field("createArtifactProductionVersions", at: Resolver.createArtifactProductionVersions) {
@@ -87,10 +87,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteArtifactProductionVersion: AppField<
-    ArtifactProductionVersion,
-    IdentifyEntityArgs
-  > {
+  static var deleteArtifactProductionVersion: AppField<ArtifactProductionVersion, IdentifyEntity> {
     Field("deleteArtifactProductionVersion", at: Resolver.deleteArtifactProductionVersion) {
       Argument("id", at: \.id)
     }

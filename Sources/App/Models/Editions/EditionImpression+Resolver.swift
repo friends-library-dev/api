@@ -5,7 +5,7 @@ import Vapor
 extension Resolver {
   func getEditionImpression(
     req: Req,
-    args: IdentifyEntityArgs
+    args: IdentifyEntity
   ) throws -> Future<EditionImpression> {
     try req.requirePermission(to: .queryEntities)
     return future(of: EditionImpression.self, on: req.eventLoop) {
@@ -23,20 +23,20 @@ extension Resolver {
   func createEditionImpression(
     req: Req,
     args: InputArgs<AppSchema.CreateEditionImpressionInput>
-  ) throws -> Future<EditionImpression> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: EditionImpression.self, on: req.eventLoop) {
-      try await Current.db.create(EditionImpression(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(EditionImpression(args.input)).identity
     }
   }
 
   func createEditionImpressions(
     req: Req,
     args: InputArgs<[AppSchema.CreateEditionImpressionInput]>
-  ) throws -> Future<[EditionImpression]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [EditionImpression].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(EditionImpression.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(EditionImpression.init)).map(\.identity)
     }
   }
 
@@ -62,7 +62,7 @@ extension Resolver {
 
   func deleteEditionImpression(
     req: Req,
-    args: IdentifyEntityArgs
+    args: IdentifyEntity
   ) throws -> Future<EditionImpression> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: EditionImpression.self, on: req.eventLoop) {

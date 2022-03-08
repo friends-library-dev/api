@@ -57,7 +57,7 @@ extension AppSchema {
     }
   }
 
-  static var getFriendQuote: AppField<FriendQuote, IdentifyEntityArgs> {
+  static var getFriendQuote: AppField<FriendQuote, IdentifyEntity> {
     Field("getFriendQuote", at: Resolver.getFriendQuote) {
       Argument("id", at: \.id)
     }
@@ -67,13 +67,13 @@ extension AppSchema {
     Field("getFriendQuotes", at: Resolver.getFriendQuotes)
   }
 
-  static var createFriendQuote: AppField<FriendQuote, InputArgs<CreateFriendQuoteInput>> {
+  static var createFriendQuote: AppField<IdentifyEntity, InputArgs<CreateFriendQuoteInput>> {
     Field("createFriendQuote", at: Resolver.createFriendQuote) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createFriendQuotes: AppField<[FriendQuote], InputArgs<[CreateFriendQuoteInput]>> {
+  static var createFriendQuotes: AppField<[IdentifyEntity], InputArgs<[CreateFriendQuoteInput]>> {
     Field("createFriendQuotes", at: Resolver.createFriendQuotes) {
       Argument("input", at: \.input)
     }
@@ -91,7 +91,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteFriendQuote: AppField<FriendQuote, IdentifyEntityArgs> {
+  static var deleteFriendQuote: AppField<FriendQuote, IdentifyEntity> {
     Field("deleteFriendQuote", at: Resolver.deleteFriendQuote) {
       Argument("id", at: \.id)
     }

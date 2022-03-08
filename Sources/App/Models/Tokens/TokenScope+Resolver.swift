@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getTokenScope(req: Req, args: IdentifyEntityArgs) throws -> Future<TokenScope> {
+  func getTokenScope(req: Req, args: IdentifyEntity) throws -> Future<TokenScope> {
     try req.requirePermission(to: .queryTokens)
     return future(of: TokenScope.self, on: req.eventLoop) {
       try await Current.db.find(TokenScope.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createTokenScope(
     req: Req,
     args: InputArgs<AppSchema.CreateTokenScopeInput>
-  ) throws -> Future<TokenScope> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateTokens)
-    return future(of: TokenScope.self, on: req.eventLoop) {
-      try await Current.db.create(TokenScope(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(TokenScope(args.input)).identity
     }
   }
 
   func createTokenScopes(
     req: Req,
     args: InputArgs<[AppSchema.CreateTokenScopeInput]>
-  ) throws -> Future<[TokenScope]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateTokens)
-    return future(of: [TokenScope].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(TokenScope.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(TokenScope.init)).map(\.identity)
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteTokenScope(req: Req, args: IdentifyEntityArgs) throws -> Future<TokenScope> {
+  func deleteTokenScope(req: Req, args: IdentifyEntity) throws -> Future<TokenScope> {
     try req.requirePermission(to: .mutateTokens)
     return future(of: TokenScope.self, on: req.eventLoop) {
       try await Current.db.delete(TokenScope.self, byId: args.id)

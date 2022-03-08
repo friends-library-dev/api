@@ -134,7 +134,7 @@ extension AppSchema {
     }
   }
 
-  static var getOrder: AppField<Order, IdentifyEntityArgs> {
+  static var getOrder: AppField<Order, IdentifyEntity> {
     Field("getOrder", at: Resolver.getOrder) {
       Argument("id", at: \.id)
     }
@@ -144,13 +144,13 @@ extension AppSchema {
     Field("getOrders", at: Resolver.getOrders)
   }
 
-  static var createOrder: AppField<Order, InputArgs<CreateOrderInput>> {
+  static var createOrder: AppField<IdentifyEntity, InputArgs<CreateOrderInput>> {
     Field("createOrder", at: Resolver.createOrder) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createOrders: AppField<[Order], InputArgs<[CreateOrderInput]>> {
+  static var createOrders: AppField<[IdentifyEntity], InputArgs<[CreateOrderInput]>> {
     Field("createOrders", at: Resolver.createOrders) {
       Argument("input", at: \.input)
     }
@@ -168,7 +168,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteOrder: AppField<Order, IdentifyEntityArgs> {
+  static var deleteOrder: AppField<Order, IdentifyEntity> {
     Field("deleteOrder", at: Resolver.deleteOrder) {
       Argument("id", at: \.id)
     }

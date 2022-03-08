@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
+  func getIsbn(req: Req, args: IdentifyEntity) throws -> Future<Isbn> {
     try req.requirePermission(to: .queryEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
       try await Current.db.find(Isbn.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createIsbn(
     req: Req,
     args: InputArgs<AppSchema.CreateIsbnInput>
-  ) throws -> Future<Isbn> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: Isbn.self, on: req.eventLoop) {
-      try await Current.db.create(Isbn(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(Isbn(args.input)).identity
     }
   }
 
   func createIsbns(
     req: Req,
     args: InputArgs<[AppSchema.CreateIsbnInput]>
-  ) throws -> Future<[Isbn]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [Isbn].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Isbn.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(Isbn.init)).map(\.identity)
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteIsbn(req: Req, args: IdentifyEntityArgs) throws -> Future<Isbn> {
+  func deleteIsbn(req: Req, args: IdentifyEntity) throws -> Future<Isbn> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Isbn.self, on: req.eventLoop) {
       try await Current.db.delete(Isbn.self, byId: args.id)

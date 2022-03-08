@@ -4,7 +4,7 @@ import Vapor
 extension Resolver {
   func deleteEditionEditionChapters(
     req: Req,
-    args: IdentifyEntityArgs
+    args: IdentifyEntity
   ) throws -> Future<[EditionChapter]> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: [EditionChapter].self, on: req.eventLoop) {
@@ -17,9 +17,9 @@ extension Resolver {
   func createEdition(
     req: Req,
     args: InputArgs<AppSchema.CreateEditionInput>
-  ) throws -> Future<Edition> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: Edition.self, on: req.eventLoop) {
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
       let isbn: Isbn
       do {
         isbn = try await Current.db.query(Isbn.self)
@@ -33,13 +33,13 @@ extension Resolver {
       let edition = try await Current.db.create(Edition(args.input))
       isbn.editionId = edition.id
       try await Current.db.update(isbn)
-      return edition
+      return edition.identity
     }
   }
 }
 
 extension AppSchema {
-  static var deleteEditionEditionChapters: AppField<[EditionChapter], IdentifyEntityArgs> {
+  static var deleteEditionEditionChapters: AppField<[EditionChapter], IdentifyEntity> {
     Field("deleteEditionEditionChapters", at: Resolver.deleteEditionEditionChapters) {
       Argument("id", at: \.id)
     }
@@ -49,7 +49,7 @@ extension AppSchema {
 // below auto-generated
 
 extension Resolver {
-  func getEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
+  func getEdition(req: Req, args: IdentifyEntity) throws -> Future<Edition> {
     try req.requirePermission(to: .queryEntities)
     return future(of: Edition.self, on: req.eventLoop) {
       try await Current.db.find(Edition.self, byId: args.id)
@@ -66,10 +66,10 @@ extension Resolver {
   func createEditions(
     req: Req,
     args: InputArgs<[AppSchema.CreateEditionInput]>
-  ) throws -> Future<[Edition]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [Edition].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Edition.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(Edition.init)).map(\.identity)
     }
   }
 
@@ -93,7 +93,7 @@ extension Resolver {
     }
   }
 
-  func deleteEdition(req: Req, args: IdentifyEntityArgs) throws -> Future<Edition> {
+  func deleteEdition(req: Req, args: IdentifyEntity) throws -> Future<Edition> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Edition.self, on: req.eventLoop) {
       try await Current.db.delete(Edition.self, byId: args.id)

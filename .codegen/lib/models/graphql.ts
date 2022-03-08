@@ -254,7 +254,7 @@ extension AppSchema {
     }
   }
 
-  static var getThing: AppField<Thing, IdentifyEntityArgs> {
+  static var getThing: AppField<Thing, IdentifyEntity> {
     Field("getThing", at: Resolver.getThing) {
       Argument("id", at: \\.id)
     }
@@ -264,13 +264,13 @@ extension AppSchema {
     Field("getThings", at: Resolver.getThings)
   }
 
-  static var createThing: AppField<Thing, InputArgs<CreateThingInput>> {
+  static var createThing: AppField<IdentifyEntity, InputArgs<CreateThingInput>> {
     Field("createThing", at: Resolver.createThing) {
       Argument("input", at: \\.input)
     }
   }
 
-  static var createThings: AppField<[Thing], InputArgs<[CreateThingInput]>> {
+  static var createThings: AppField<[IdentifyEntity], InputArgs<[CreateThingInput]>> {
     Field("createThings", at: Resolver.createThings) {
       Argument("input", at: \\.input)
     }
@@ -288,7 +288,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteThing: AppField<Thing, IdentifyEntityArgs> {
+  static var deleteThing: AppField<Thing, IdentifyEntity> {
     Field("deleteThing", at: Resolver.deleteThing) {
       Argument("id", at: \\.id)
     }

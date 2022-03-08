@@ -18,42 +18,11 @@ final class DownloadResolverTests: AppTestCase {
       """
       mutation CreateDownload($input: CreateDownloadInput!) {
         download: createDownload(input: $input) {
-          edition {
-            id
-            editionType: type
-            document {
-              documentId: id
-            }
-          }
-          format
-          source
-          isMobile
-          audioQuality
-          audioPartNumber
-          userAgent
-          os
-          browser
-          platform
-          referrer
-          ip
-          city
-          region
-          postalCode
-          country
-          latitude
-          longitude
+          id
         }
       }
       """,
-      expectedData: .containsKVPs([
-        "documentId": entities.document.id.lowercased,
-        "editionType": entities.edition.type.rawValue,
-        "format": map["format"],
-        "source": map["source"],
-        "isMobile": map["isMobile"],
-        "audioQuality": map["audioQuality"],
-        "audioPartNumber": map["audioPartNumber"],
-      ]),
+      expectedData: .contains("\"id\":"),
       headers: [.authorization: "Bearer \(Seeded.tokens.allScopes)"]
     ).run(Self.app, variables: ["input": insert.gqlMap()])
   }

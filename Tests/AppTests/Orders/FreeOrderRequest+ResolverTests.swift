@@ -75,33 +75,11 @@ final class FreeOrderRequestResolverTests: AppTestCase {
       """
       mutation CreateFreeOrderRequest($input: CreateFreeOrderRequestInput!) {
         request: createFreeOrderRequest(input: $input) {
-          email
-          requestedBooks
-          aboutRequester
-          name
-          addressStreet
-          addressStreet2
-          addressCity
-          addressState
-          addressZip
-          addressCountry
-          source
+          id
         }
       }
       """,
-      expectedData: .containsKVPs([
-        "email": "foo@bar.com",
-        "requestedBooks": "La Senda Antigua",
-        "aboutRequester": "not a freebie hunter",
-        "name": "Bob",
-        "addressStreet": "123 Magnolia Lane",
-        "addressStreet2": "apt 2",
-        "addressCity": "Beverly Hills",
-        "addressState": "CA",
-        "addressZip": "90210",
-        "addressCountry": "US",
-        "source": "https:\\/\\/zoecostarica.com",
-      ])
+      expectedData: .contains("\"id\":")
     ).run(Self.app, variables: ["input": request])
   }
 }

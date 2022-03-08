@@ -83,7 +83,7 @@ extension AppSchema {
     }
   }
 
-  static var getAudio: AppField<Audio, IdentifyEntityArgs> {
+  static var getAudio: AppField<Audio, IdentifyEntity> {
     Field("getAudio", at: Resolver.getAudio) {
       Argument("id", at: \.id)
     }
@@ -93,13 +93,13 @@ extension AppSchema {
     Field("getAudios", at: Resolver.getAudios)
   }
 
-  static var createAudio: AppField<Audio, InputArgs<CreateAudioInput>> {
+  static var createAudio: AppField<IdentifyEntity, InputArgs<CreateAudioInput>> {
     Field("createAudio", at: Resolver.createAudio) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createAudios: AppField<[Audio], InputArgs<[CreateAudioInput]>> {
+  static var createAudios: AppField<[IdentifyEntity], InputArgs<[CreateAudioInput]>> {
     Field("createAudios", at: Resolver.createAudios) {
       Argument("input", at: \.input)
     }
@@ -117,7 +117,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteAudio: AppField<Audio, IdentifyEntityArgs> {
+  static var deleteAudio: AppField<Audio, IdentifyEntity> {
     Field("deleteAudio", at: Resolver.deleteAudio) {
       Argument("id", at: \.id)
     }

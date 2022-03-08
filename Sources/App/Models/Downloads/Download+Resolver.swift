@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getDownload(req: Req, args: IdentifyEntityArgs) throws -> Future<Download> {
+  func getDownload(req: Req, args: IdentifyEntity) throws -> Future<Download> {
     try req.requirePermission(to: .queryEntities)
     return future(of: Download.self, on: req.eventLoop) {
       try await Current.db.find(Download.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createDownload(
     req: Req,
     args: InputArgs<AppSchema.CreateDownloadInput>
-  ) throws -> Future<Download> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: Download.self, on: req.eventLoop) {
-      try await Current.db.create(Download(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(Download(args.input)).identity
     }
   }
 
   func createDownloads(
     req: Req,
     args: InputArgs<[AppSchema.CreateDownloadInput]>
-  ) throws -> Future<[Download]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [Download].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Download.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(Download.init)).map(\.identity)
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteDownload(req: Req, args: IdentifyEntityArgs) throws -> Future<Download> {
+  func deleteDownload(req: Req, args: IdentifyEntity) throws -> Future<Download> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Download.self, on: req.eventLoop) {
       try await Current.db.delete(Download.self, byId: args.id)

@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
+  func getDocument(req: Req, args: IdentifyEntity) throws -> Future<Document> {
     try req.requirePermission(to: .queryEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.find(Document.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createDocument(
     req: Req,
     args: InputArgs<AppSchema.CreateDocumentInput>
-  ) throws -> Future<Document> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: Document.self, on: req.eventLoop) {
-      try await Current.db.create(Document(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(Document(args.input)).identity
     }
   }
 
   func createDocuments(
     req: Req,
     args: InputArgs<[AppSchema.CreateDocumentInput]>
-  ) throws -> Future<[Document]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [Document].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(Document.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(Document.init)).map(\.identity)
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<Document> {
+  func deleteDocument(req: Req, args: IdentifyEntity) throws -> Future<Document> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: Document.self, on: req.eventLoop) {
       try await Current.db.delete(Document.self, byId: args.id)

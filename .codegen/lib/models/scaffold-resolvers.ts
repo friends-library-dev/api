@@ -9,7 +9,7 @@ const RESOLVER_PATTERN = /* swift */ `
 // below auto-generated
 
 extension Resolver {
-  func getThing(req: Req, args: IdentifyEntityArgs) throws -> Future<Thing> {
+  func getThing(req: Req, args: IdentifyEntity) throws -> Future<Thing> {
     try req.requirePermission(to: .queryThings)
     return future(of: Thing.self, on: req.eventLoop) {
       try await Current.db.find(Thing.self, byId: args.id)
@@ -63,7 +63,7 @@ extension Resolver {
     }
   }
 
-  func deleteThing(req: Req, args: IdentifyEntityArgs) throws -> Future<Thing> {
+  func deleteThing(req: Req, args: IdentifyEntity) throws -> Future<Thing> {
     try req.requirePermission(to: .mutateThings)
     return future(of: Thing.self, on: req.eventLoop) {
       try await Current.db.delete(Thing.self, byId: args.id)

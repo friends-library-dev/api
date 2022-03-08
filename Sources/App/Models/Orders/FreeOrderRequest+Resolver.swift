@@ -7,11 +7,11 @@ extension Resolver {
   func createFreeOrderRequest(
     req: Req,
     args: InputArgs<AppSchema.CreateFreeOrderRequestInput>
-  ) throws -> Future<FreeOrderRequest> {
-    future(of: FreeOrderRequest.self, on: req.eventLoop) {
+  ) throws -> Future<IdentifyEntity> {
+    future(of: IdentifyEntity.self, on: req.eventLoop) {
       let order = try await Current.db.create(FreeOrderRequest(args.input))
       try await sendFreeOrderRequestNotifications(for: order, on: req)
-      return order
+      return order.identity
     }
   }
 }
@@ -74,7 +74,7 @@ private func entry(_ key: String, _ value: String?) -> String {
 // below auto-generated
 
 extension Resolver {
-  func getFreeOrderRequest(req: Req, args: IdentifyEntityArgs) throws -> Future<FreeOrderRequest> {
+  func getFreeOrderRequest(req: Req, args: IdentifyEntity) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .queryOrders)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {
       try await Current.db.find(FreeOrderRequest.self, byId: args.id)
@@ -91,10 +91,10 @@ extension Resolver {
   func createFreeOrderRequests(
     req: Req,
     args: InputArgs<[AppSchema.CreateFreeOrderRequestInput]>
-  ) throws -> Future<[FreeOrderRequest]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateOrders)
-    return future(of: [FreeOrderRequest].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(FreeOrderRequest.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(FreeOrderRequest.init)).map(\.identity)
     }
   }
 
@@ -120,7 +120,7 @@ extension Resolver {
 
   func deleteFreeOrderRequest(
     req: Req,
-    args: IdentifyEntityArgs
+    args: IdentifyEntity
   ) throws -> Future<FreeOrderRequest> {
     try req.requirePermission(to: .mutateOrders)
     return future(of: FreeOrderRequest.self, on: req.eventLoop) {

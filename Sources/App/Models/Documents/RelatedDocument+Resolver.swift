@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getRelatedDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<RelatedDocument> {
+  func getRelatedDocument(req: Req, args: IdentifyEntity) throws -> Future<RelatedDocument> {
     try req.requirePermission(to: .queryEntities)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
       try await Current.db.find(RelatedDocument.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createRelatedDocument(
     req: Req,
     args: InputArgs<AppSchema.CreateRelatedDocumentInput>
-  ) throws -> Future<RelatedDocument> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: RelatedDocument.self, on: req.eventLoop) {
-      try await Current.db.create(RelatedDocument(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(RelatedDocument(args.input)).identity
     }
   }
 
   func createRelatedDocuments(
     req: Req,
     args: InputArgs<[AppSchema.CreateRelatedDocumentInput]>
-  ) throws -> Future<[RelatedDocument]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [RelatedDocument].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(RelatedDocument.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(RelatedDocument.init)).map(\.identity)
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteRelatedDocument(req: Req, args: IdentifyEntityArgs) throws -> Future<RelatedDocument> {
+  func deleteRelatedDocument(req: Req, args: IdentifyEntity) throws -> Future<RelatedDocument> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: RelatedDocument.self, on: req.eventLoop) {
       try await Current.db.delete(RelatedDocument.self, byId: args.id)

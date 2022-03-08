@@ -38,11 +38,11 @@ final class ArtifactProductionVersionResolverTests: AppTestCase {
       """
       mutation CreateArtifactProductionVersion($input: CreateArtifactProductionVersionInput!) {
         version: createArtifactProductionVersion(input: $input) {
-          sha: version
+          id
         }
       }
       """,
-      expectedData: .containsKVPs(["sha": revision]),
+      expectedData: .contains("\"id\":"),
       headers: [.authorization: "Bearer \(Seeded.tokens.mutateArtifactProductionVersions)"]
     ).run(Self.app, variables: ["input": .dictionary(["version": .string(revision)])])
   }

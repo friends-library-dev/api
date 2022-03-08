@@ -3,7 +3,7 @@ import Vapor
 // below auto-generated
 
 extension Resolver {
-  func getOrderItem(req: Req, args: IdentifyEntityArgs) throws -> Future<OrderItem> {
+  func getOrderItem(req: Req, args: IdentifyEntity) throws -> Future<OrderItem> {
     try req.requirePermission(to: .queryOrders)
     return future(of: OrderItem.self, on: req.eventLoop) {
       try await Current.db.find(OrderItem.self, byId: args.id)
@@ -20,20 +20,20 @@ extension Resolver {
   func createOrderItem(
     req: Req,
     args: InputArgs<AppSchema.CreateOrderItemInput>
-  ) throws -> Future<OrderItem> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateOrders)
-    return future(of: OrderItem.self, on: req.eventLoop) {
-      try await Current.db.create(OrderItem(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(OrderItem(args.input)).identity
     }
   }
 
   func createOrderItems(
     req: Req,
     args: InputArgs<[AppSchema.CreateOrderItemInput]>
-  ) throws -> Future<[OrderItem]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateOrders)
-    return future(of: [OrderItem].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(OrderItem.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(OrderItem.init)).map(\.identity)
     }
   }
 
@@ -57,7 +57,7 @@ extension Resolver {
     }
   }
 
-  func deleteOrderItem(req: Req, args: IdentifyEntityArgs) throws -> Future<OrderItem> {
+  func deleteOrderItem(req: Req, args: IdentifyEntity) throws -> Future<OrderItem> {
     try req.requirePermission(to: .mutateOrders)
     return future(of: OrderItem.self, on: req.eventLoop) {
       try await Current.db.delete(OrderItem.self, byId: args.id)

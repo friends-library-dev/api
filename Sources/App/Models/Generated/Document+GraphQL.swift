@@ -99,7 +99,7 @@ extension AppSchema {
     }
   }
 
-  static var getDocument: AppField<Document, IdentifyEntityArgs> {
+  static var getDocument: AppField<Document, IdentifyEntity> {
     Field("getDocument", at: Resolver.getDocument) {
       Argument("id", at: \.id)
     }
@@ -109,13 +109,13 @@ extension AppSchema {
     Field("getDocuments", at: Resolver.getDocuments)
   }
 
-  static var createDocument: AppField<Document, InputArgs<CreateDocumentInput>> {
+  static var createDocument: AppField<IdentifyEntity, InputArgs<CreateDocumentInput>> {
     Field("createDocument", at: Resolver.createDocument) {
       Argument("input", at: \.input)
     }
   }
 
-  static var createDocuments: AppField<[Document], InputArgs<[CreateDocumentInput]>> {
+  static var createDocuments: AppField<[IdentifyEntity], InputArgs<[CreateDocumentInput]>> {
     Field("createDocuments", at: Resolver.createDocuments) {
       Argument("input", at: \.input)
     }
@@ -133,7 +133,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteDocument: AppField<Document, IdentifyEntityArgs> {
+  static var deleteDocument: AppField<Document, IdentifyEntity> {
     Field("deleteDocument", at: Resolver.deleteDocument) {
       Argument("id", at: \.id)
     }

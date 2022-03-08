@@ -287,7 +287,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           }
         }
 
-        static var getThing: AppField<Thing, IdentifyEntityArgs> {
+        static var getThing: AppField<Thing, IdentifyEntity> {
           Field("getThing", at: Resolver.getThing) {
             Argument("id", at: \\.id)
           }
@@ -321,7 +321,7 @@ describe(`generateModelGraphQLTypes()`, () => {
           }
         }
 
-        static var deleteThing: AppField<Thing, IdentifyEntityArgs> {
+        static var deleteThing: AppField<Thing, IdentifyEntity> {
           Field("deleteThing", at: Resolver.deleteThing) {
             Argument("id", at: \\.id)
           }

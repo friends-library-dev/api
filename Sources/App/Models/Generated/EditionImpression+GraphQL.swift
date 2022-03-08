@@ -65,7 +65,7 @@ extension AppSchema {
     }
   }
 
-  static var getEditionImpression: AppField<EditionImpression, IdentifyEntityArgs> {
+  static var getEditionImpression: AppField<EditionImpression, IdentifyEntity> {
     Field("getEditionImpression", at: Resolver.getEditionImpression) {
       Argument("id", at: \.id)
     }
@@ -76,7 +76,7 @@ extension AppSchema {
   }
 
   static var createEditionImpression: AppField<
-    EditionImpression,
+    IdentifyEntity,
     InputArgs<CreateEditionImpressionInput>
   > {
     Field("createEditionImpression", at: Resolver.createEditionImpression) {
@@ -85,7 +85,7 @@ extension AppSchema {
   }
 
   static var createEditionImpressions: AppField<
-    [EditionImpression],
+    [IdentifyEntity],
     InputArgs<[CreateEditionImpressionInput]>
   > {
     Field("createEditionImpressions", at: Resolver.createEditionImpressions) {
@@ -111,7 +111,7 @@ extension AppSchema {
     }
   }
 
-  static var deleteEditionImpression: AppField<EditionImpression, IdentifyEntityArgs> {
+  static var deleteEditionImpression: AppField<EditionImpression, IdentifyEntity> {
     Field("deleteEditionImpression", at: Resolver.deleteEditionImpression) {
       Argument("id", at: \.id)
     }

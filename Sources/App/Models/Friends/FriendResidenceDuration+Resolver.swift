@@ -5,7 +5,7 @@ import Vapor
 extension Resolver {
   func getFriendResidenceDuration(
     req: Req,
-    args: IdentifyEntityArgs
+    args: IdentifyEntity
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .queryEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
@@ -26,20 +26,20 @@ extension Resolver {
   func createFriendResidenceDuration(
     req: Req,
     args: InputArgs<AppSchema.CreateFriendResidenceDurationInput>
-  ) throws -> Future<FriendResidenceDuration> {
+  ) throws -> Future<IdentifyEntity> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
-      try await Current.db.create(FriendResidenceDuration(args.input))
+    return future(of: IdentifyEntity.self, on: req.eventLoop) {
+      try await Current.db.create(FriendResidenceDuration(args.input)).identity
     }
   }
 
   func createFriendResidenceDurations(
     req: Req,
     args: InputArgs<[AppSchema.CreateFriendResidenceDurationInput]>
-  ) throws -> Future<[FriendResidenceDuration]> {
+  ) throws -> Future<[IdentifyEntity]> {
     try req.requirePermission(to: .mutateEntities)
-    return future(of: [FriendResidenceDuration].self, on: req.eventLoop) {
-      try await Current.db.create(args.input.map(FriendResidenceDuration.init))
+    return future(of: [IdentifyEntity].self, on: req.eventLoop) {
+      try await Current.db.create(args.input.map(FriendResidenceDuration.init)).map(\.identity)
     }
   }
 
@@ -65,7 +65,7 @@ extension Resolver {
 
   func deleteFriendResidenceDuration(
     req: Req,
-    args: IdentifyEntityArgs
+    args: IdentifyEntity
   ) throws -> Future<FriendResidenceDuration> {
     try req.requirePermission(to: .mutateEntities)
     return future(of: FriendResidenceDuration.self, on: req.eventLoop) {
