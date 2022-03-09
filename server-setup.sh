@@ -153,13 +153,6 @@ make install
 sudo mv /home/jared/xcbeautify/.build/x86_64-unknown-linux-gnu/release/xcbeautify /usr/local/bin/
 rm -rf ~/xcbeautify
 
-# sync prod->staging db once every hour
-crontab -e
-# then add line:
-```
-45 * * * * /usr/bin/bash /home/jared/deploy/staging/sync-staging-db.sh
-```
-
 # if you want cron-based postgres backups uploaded to S3, see ./server-setup-aws.sh
 
 # set timezone to EST for scheduled jobs, etc.

@@ -93,7 +93,6 @@ private func configureScheduledJobs(_ app: Application) throws {
   // and are just doing very low frequency tasks, throttle way down
   app.queues.configuration.workerCount = 1
   app.queues.configuration.refreshInterval = .seconds(300)
-
   app.queues.use(.fluent(useSoftDeletes: false))
 
   let backupJob = BackupJob(
@@ -109,6 +108,7 @@ private func configureScheduledJobs(_ app: Application) throws {
 
   app.queues.schedule(backupJob).daily().at(.midnight)
   app.queues.schedule(ProcessOrdersJob()).hourly().at(15)
+  app.queues.schedule(SyncStagingDbJob()).hourly().at(45)
 
   try app.queues.startScheduledJobs()
 }

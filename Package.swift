@@ -46,6 +46,10 @@ let package = Package(
       url: "https://github.com/kylehughes/RomanNumeralKit.git",
       from: "1.0.0"
     ),
+    .package(
+      url: "https://github.com/JohnSundell/ShellOut.git",
+      from: "2.0.0"
+    ),
   ],
   targets: [
     .target(
@@ -62,6 +66,7 @@ let package = Package(
         "GraphQLKit",
         "QueuesFluentDriver",
         "VaporUtils",
+        "ShellOut",
       ],
       swiftSettings: [
         .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release)),
