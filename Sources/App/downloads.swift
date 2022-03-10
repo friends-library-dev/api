@@ -121,7 +121,7 @@ private func slackDownload(
       with: "",
       options: .regularExpression
     )
-    refererLink = "\nDownloaded from: \(Slack.Message.link(to: urlString, withText: path)))"
+    refererLink = "\nDownloaded from: \(Slack.Message.link(to: urlString, withText: path))"
   }
 
   var duplicateLocation = ""
