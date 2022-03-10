@@ -1,7 +1,7 @@
 import Foundation
 
 enum IpApi {
-  struct Response: Decodable {
+  struct Response: Decodable, Equatable {
     var ip: String?
     var city: String?
     var region: String?

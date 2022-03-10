@@ -19,6 +19,7 @@ private struct SendResponse: Decodable {
 private let MAX_SAFE_SLACK_MSG_LENGTH = 2900
 
 private func send(_ slack: Slack.Message) async {
+  var slack = slack
   switch slack.channel {
     case .info, .orders, .downloads, .other:
       Current.logger.info("Sent a slack to `\(slack.channel)`: \(slack.text)")
@@ -30,21 +31,18 @@ private func send(_ slack: Slack.Message) async {
 
   guard Env.mode != .dev || Env.get("SLACK_DEV") != nil else { return }
 
-  let safeText = slack.text.dropLast(max(0, slack.text.count - MAX_SAFE_SLACK_MSG_LENGTH))
+  if case .text(let text) = slack.content {
+    let safeText = text.dropLast(max(0, text.count - MAX_SAFE_SLACK_MSG_LENGTH))
+    slack.content = .text(String(safeText))
+  }
 
   do {
     let response = try await HTTP.postJson(
-      [
-        "channel": slack.channel.string,
-        "text": String(safeText),
-        "icon_emoji": slack.emoji.description,
-        "username": slack.username,
-        "unfurl_links": "false",
-        "unfurl_media": "false",
-      ],
+      slack,
       to: "https://slack.com/api/chat.postMessage",
       decoding: SendResponse.self,
-      auth: .bearer(slack.channel.token)
+      auth: .bearer(slack.channel.token),
+      keyEncodingStrategy: .convertToSnakeCase
     )
     if !response.ok {
       Current.logger.error("Failed to send slack, error=\(response.error ?? "")")

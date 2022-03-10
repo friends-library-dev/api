@@ -12,7 +12,6 @@ final class DownloadResolverTests: AppTestCase {
     insert.audioQuality = .lq
     insert.audioPartNumber = 33
     insert.editionId = entities.edition.id
-    let map = insert.gqlMap()
 
     GraphQLTest(
       """

@@ -1,3 +1,5 @@
+import Foundation
+
 enum Slack {}
 
 extension Slack {
@@ -20,10 +22,31 @@ extension Slack {
   }
 
   struct Message {
-    let text: String
-    let channel: Channel
-    let emoji: Emoji
-    let username: String
+    enum Content {
+      indirect enum Block {
+        case header(text: String)
+        case image(url: URL, altText: String)
+        case section(text: String, accessory: Block?)
+        case divider
+      }
+
+      case text(String)
+      case blocks([Block], String)
+    }
+
+    var content: Content
+    var channel: Channel
+    var emoji: Emoji
+    var username: String
+
+    var text: String {
+      switch content {
+        case .text(let text):
+          return text
+        case .blocks(_, let fallbackText):
+          return fallbackText
+      }
+    }
 
     init(
       text: String,
@@ -31,13 +54,28 @@ extension Slack {
       emoji: Emoji = .robotFace,
       username: String = "FLP Bot"
     ) {
-      self.text = text
+      content = .text(text)
+      self.channel = channel
+      self.emoji = emoji
+      self.username = username
+    }
+
+    init(
+      blocks: [Content.Block],
+      fallbackText: String,
+      channel: Channel,
+      emoji: Emoji = .robotFace,
+      username: String = "FLP Bot"
+    ) {
+      content = .blocks(blocks, fallbackText)
       self.channel = channel
       self.emoji = emoji
       self.username = username
     }
   }
 }
+
+// extensions
 
 extension Slack.Message {
   static func link(to url: String, withText text: String) -> String {
@@ -96,3 +134,5 @@ func slackOrder(_ msg: String) async {
 extension Slack.Emoji: Equatable {}
 extension Slack.Channel: Equatable {}
 extension Slack.Message: Equatable {}
+extension Slack.Message.Content: Equatable {}
+extension Slack.Message.Content.Block: Equatable {}

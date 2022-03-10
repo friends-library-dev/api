@@ -326,6 +326,33 @@ private func qualityLogPathSuffix(_ quality: DownloadableFile.Format.Audio.Quali
 // extensions
 
 extension DownloadableFile.Format {
+  var description: String {
+    switch self {
+      case .ebook(.epub):
+        return "epub"
+      case .ebook(.mobi):
+        return "mobi"
+      case .ebook(.pdf):
+        return "web-pdf"
+      case .ebook(.speech):
+        return "speech"
+      case .ebook(.app):
+        return "app-ebook"
+      case .audio(.mp3s(let quality)):
+        return "mp3 zip (\(quality == .high ? "HQ" : "LQ"))"
+      case .audio(.m4b(let quality)):
+        return "m4b audiobook (\(quality == .high ? "HQ" : "LQ"))"
+      case .audio(.mp3(let quality, let index)):
+        return "mp3 \(index == nil ? "" : "pt \(index! + 1) ")(\(quality == .high ? "HQ" : "LQ"))"
+      case .audio(.podcast(let quality)):
+        return "podcast rss feed (\(quality == .high ? "HQ" : "LQ"))"
+      case .paperback(type: .cover, let index):
+        return "paperback cover\(index == nil ? "" : " (v\(index! + 1)")"
+      case .paperback(type: .interior, let index):
+        return "paperback interior\(index == nil ? "" : " (v\(index! + 1)")"
+    }
+  }
+
   var downloadFormat: Download.Format? {
     switch self {
       case .ebook(.epub):

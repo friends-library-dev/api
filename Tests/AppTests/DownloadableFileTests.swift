@@ -133,10 +133,7 @@ final class DownloadableFileTests: AppTestCase {
     XCTAssertEqual(inserted.longitude, "-123.456")
     XCTAssertEqual(sent.slacks.count, 1)
     XCTAssertEqual(sent.slacks[0].channel, .audioDownloads)
-    XCTAssertEqual(
-      sent.slacks[0].text,
-      "Download: `\(edition.directoryPath)/Journal--pt4.mp3`, device: `non-mobile`, from url: `[friendslibrary.com]`, location: `City / Region / Postal / CountryName` https://www.google.com/maps/@123.456,-123.456,14z"
-    )
+    XCTAssertEqual(sent.slacks[0].text, "New download: \(file.logPath)")
   }
 
   func testAppUaIsNotCountedAsBot() async throws {
