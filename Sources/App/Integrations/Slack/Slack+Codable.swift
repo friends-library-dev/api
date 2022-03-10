@@ -18,7 +18,7 @@ extension Slack.Message: Encodable {
     try container.encode(username, forKey: .username)
     switch content {
       case .text(let text):
-        try container.encode(TextObject(text), forKey: .text)
+        try container.encode(text, forKey: .text)
       case .blocks(let blocks, let text):
         try container.encode(text, forKey: .text)
         try container.encode(blocks, forKey: .blocks)

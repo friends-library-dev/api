@@ -11,10 +11,7 @@ final class SlackTests: XCTestCase {
       {
         "channel" : "#debug",
         "icon_emoji" : "robot_face",
-        "text" : {
-          "text" : "foo",
-          "type" : "mrkdwn"
-        },
+        "text" : "foo",
         "unfurl_links" : false,
         "unfurl_media" : false,
         "username" : "FLP Bot"
