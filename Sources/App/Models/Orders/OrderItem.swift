@@ -11,6 +11,8 @@ final class OrderItem: Codable {
   var order = Parent<Order>.notLoaded
   var edition = Parent<Edition>.notLoaded
 
+  var isValid: Bool { true }
+
   init(
     id: Id = .init(),
     orderId: Order.Id,

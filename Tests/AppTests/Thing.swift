@@ -21,6 +21,8 @@ final class Thing: Codable {
   var updatedAt = Current.date()
   var deletedAt: Date?
 
+  var isValid: Bool { true }
+
   init(
     id: Id = .init(),
     foo: String = "foo",

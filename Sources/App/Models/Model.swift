@@ -21,6 +21,7 @@ enum PreloadedEntityType {
 
 protocol ApiModel: Codable, Equatable {
   static var preloadedEntityType: PreloadedEntityType? { get }
+  var isValid: Bool { get }
 }
 
 extension ApiModel {
@@ -167,8 +168,6 @@ extension DuetModel {
     }
     throw DuetError.missingExpectedColumn(name)
   }
-
-  var isValid: Bool { true }
 }
 
 extension DuetModel where ColumnName: RawRepresentable, ColumnName.RawValue == String {

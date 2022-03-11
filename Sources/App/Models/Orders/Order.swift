@@ -29,6 +29,8 @@ final class Order: Codable {
   var items = Children<OrderItem>.notLoaded
   var freeOrderRequest = OptionalParent<FreeOrderRequest>.notLoaded
 
+  var isValid: Bool { true }
+
   var address: ShippingAddress {
     .init(
       name: addressName,
@@ -133,6 +135,8 @@ extension Order {
     )
   }
 }
+
+// extensions
 
 extension Order {
   enum PrintJobStatus: String, Codable, CaseIterable {

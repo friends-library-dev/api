@@ -10,6 +10,8 @@ final class Token: Codable {
 
   var scopes = Children<TokenScope>.notLoaded
 
+  var isValid: Bool { true }
+
   init(id: Id = .init(), value: Value = .init(), description: String, uses: Int? = nil) {
     self.id = id
     self.value = value

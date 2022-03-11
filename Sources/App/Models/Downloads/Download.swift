@@ -24,6 +24,8 @@ final class Download: Codable {
 
   var edition = Parent<Edition>.notLoaded
 
+  var isValid: Bool { true }
+
   init(
     id: Id = .init(),
     editionId: Edition.Id,

@@ -16,6 +16,8 @@ final class FreeOrderRequest: Codable {
   var createdAt = Current.date()
   var updatedAt = Current.date()
 
+  var isValid: Bool { true }
+
   var address: ShippingAddress {
     .init(
       name: name,
