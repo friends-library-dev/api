@@ -109,7 +109,8 @@ private func configureScheduledJobs(_ app: Application) throws {
   app.queues.schedule(backupJob).daily().at(.midnight)
   app.queues.schedule(ProcessOrdersJob()).hourly().at(15)
   app.queues.schedule(SyncStagingDbJob()).hourly().at(45)
-  app.queues.schedule(VerifyConsistentChapterHeadingsJob()).hourly().at(30)
+  app.queues.schedule(VerifyConsistentChapterHeadingsJob()).daily().at(8, 0)
+  app.queues.schedule(VerifyEntityValidityJob()).daily().at(8, 15)
 
   try app.queues.startScheduledJobs()
 }
