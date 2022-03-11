@@ -22,6 +22,7 @@ extension AppSchema {
       Field("relatedDocuments", at: \.relatedDocuments)
       Field("alphabeticalName", at: \.alphabeticalName)
       Field("primaryResidence", at: \.primaryResidence)
+      Field("isValid", at: \.isValid)
       Field("documents", with: \.documents)
       Field("residences", with: \.residences)
       Field("quotes", with: \.quotes)

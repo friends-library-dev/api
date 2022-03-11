@@ -11,6 +11,7 @@ extension AppSchema {
       Field("region", at: \.region)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("isValid", at: \.isValid)
       Field("friend", with: \.friend)
       Field("durations", with: \.durations)
     }

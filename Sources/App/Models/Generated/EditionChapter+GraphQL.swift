@@ -19,6 +19,7 @@ extension AppSchema {
       Field("htmlId", at: \.htmlId)
       Field("isSequenced", at: \.isSequenced)
       Field("hasNonSequenceTitle", at: \.hasNonSequenceTitle)
+      Field("isValid", at: \.isValid)
       Field("edition", with: \.edition)
     }
   }

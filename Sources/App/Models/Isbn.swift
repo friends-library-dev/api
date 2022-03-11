@@ -9,6 +9,10 @@ final class Isbn: Codable {
 
   var edition = OptionalParent<Edition>.notLoaded
 
+  var isValid: Bool {
+    code.rawValue.match(#"^978-1-64476-\d\d\d-\d$"#)
+  }
+
   init(id: Id = .init(), code: ISBN, editionId: Edition.Id?) {
     self.id = id
     self.code = code

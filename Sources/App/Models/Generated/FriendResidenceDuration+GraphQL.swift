@@ -10,6 +10,7 @@ extension AppSchema {
       Field("start", at: \.start)
       Field("end", at: \.end)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
       Field("residence", with: \.residence)
     }
   }

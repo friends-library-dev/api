@@ -17,6 +17,7 @@ extension AppSchema {
       Field("paperbackSize", at: \.paperbackSize)
       Field("paperbackPriceInCents", at: \.paperbackPrice.rawValue)
       Field("files", at: \.files)
+      Field("isValid", at: \.isValid)
       Field("edition", with: \.edition)
     }
   }

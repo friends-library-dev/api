@@ -20,6 +20,30 @@ public extension String {
     snakeCased.uppercased()
   }
 
+  var firstLetterIsLowercase: Bool {
+    guard let firstLetter = first else { return false }
+    return firstLetter.lowercased() == String(firstLetter)
+  }
+
+  var firstLetterIsUppercase: Bool {
+    guard let firstLetter = first else { return false }
+    return firstLetter.uppercased() == String(firstLetter)
+  }
+
+  var isValidGitCommitFullSha: Bool {
+    count == 40 && match(#"^[0-9a-f]+$"#)
+  }
+
+  var containsUnpresentableSubstring: Bool {
+    contains("'")
+      || contains("\"")
+      || contains("--")
+      || contains("...")
+      || contains("+++[")
+      || contains("\u{200B}") // zero-width space
+      || match(#"\bLorem\b"#) // lorem ipsum
+  }
+
   func padLeft(toLength: Int, withPad: String) -> String {
     String(
       String(reversed())

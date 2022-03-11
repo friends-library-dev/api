@@ -19,6 +19,7 @@ extension AppSchema {
       Field("directoryPath", at: \.directoryPath)
       Field("filename", at: \.filename)
       Field("images", at: \.images)
+      Field("isValid", at: \.isValid)
       Field("document", with: \.document)
       Field("impression", with: \.impression)
       Field("isbn", with: \.isbn)

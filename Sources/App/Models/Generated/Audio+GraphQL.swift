@@ -22,6 +22,7 @@ extension AppSchema {
       Field("humanDurationAbbrev", at: \.humanDurationAbbrev)
       Field("isPublished", at: \.isPublished)
       Field("files", at: \.files)
+      Field("isValid", at: \.isValid)
       Field("edition", with: \.edition)
       Field("parts", with: \.parts)
     }

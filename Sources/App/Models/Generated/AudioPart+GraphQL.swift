@@ -20,6 +20,7 @@ extension AppSchema {
       Field("updatedAt", at: \.updatedAt)
       Field("isPublished", at: \.isPublished)
       Field("mp3File", at: \.mp3File)
+      Field("isValid", at: \.isValid)
       Field("audio", with: \.audio)
     }
   }

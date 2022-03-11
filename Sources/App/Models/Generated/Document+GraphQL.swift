@@ -27,6 +27,7 @@ extension AppSchema {
       Field("htmlShortTitle", at: \.htmlShortTitle)
       Field("utf8ShortTitle", at: \.utf8ShortTitle)
       Field("trimmedUtf8ShortTitle", at: \.trimmedUtf8ShortTitle)
+      Field("isValid", at: \.isValid)
       Field("friend", with: \.friend)
       Field("editions", with: \.editions)
       Field("altLanguageDocument", with: \.altLanguageDocument)

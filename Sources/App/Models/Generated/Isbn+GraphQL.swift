@@ -10,6 +10,7 @@ extension AppSchema {
       Field("editionId", at: \.editionId?.rawValue.lowercased)
       Field("createdAt", at: \.createdAt)
       Field("updatedAt", at: \.updatedAt)
+      Field("isValid", at: \.isValid)
       Field("edition", with: \.edition)
     }
   }

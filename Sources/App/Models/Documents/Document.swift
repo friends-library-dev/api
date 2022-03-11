@@ -9,7 +9,7 @@ final class Document: Codable {
   var filename: String
   var published: Int?
   var originalTitle: String?
-  var incomplete: Bool
+  var incomplete: Bool // e.g. spanish books that are available before completely translated
   var description: String
   var partialDescription: String
   var featuredDescription: String?

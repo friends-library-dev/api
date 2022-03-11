@@ -9,6 +9,10 @@ final class FriendResidenceDuration: Codable {
 
   var residence = Parent<FriendResidence>.notLoaded
 
+  var isValid: Bool {
+    start.isValidEarlyQuakerYear && end.isValidEarlyQuakerYear && start <= end
+  }
+
   init(
     id: Id = .init(),
     friendResidenceId: FriendResidence.Id,

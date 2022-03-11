@@ -167,6 +167,8 @@ extension DuetModel {
     }
     throw DuetError.missingExpectedColumn(name)
   }
+
+  var isValid: Bool { true }
 }
 
 extension DuetModel where ColumnName: RawRepresentable, ColumnName.RawValue == String {

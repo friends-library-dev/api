@@ -8,6 +8,7 @@ extension AppSchema {
       Field("id", at: \.id.rawValue.lowercased)
       Field("version", at: \.version.rawValue)
       Field("createdAt", at: \.createdAt)
+      Field("isValid", at: \.isValid)
     }
   }
 

@@ -12,6 +12,10 @@ final class FriendQuote: Codable {
 
   var friend = Parent<Friend>.notLoaded
 
+  var isValid: Bool {
+    source.firstLetterIsUppercase && text.firstLetterIsUppercase && order > 0
+  }
+
   init(
     id: Id = .init(),
     friendId: Friend.Id,
