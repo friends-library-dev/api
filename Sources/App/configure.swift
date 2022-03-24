@@ -55,6 +55,10 @@ public func configure(_ app: Application) throws {
     try app.autoMigrate().wait()
   }
 
+  if let hostname = Env.get("HOSTNAME") {
+    app.http.server.configuration.hostname = hostname
+  }
+
   app.logger.notice("App environment is `\(Env.mode.name)`")
 }
 

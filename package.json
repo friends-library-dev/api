@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "watchexec --restart --watch Sources --exts swift --signal SIGINT swift run",
+    "start:ip": "HOSTNAME=10.0.1.238 swift run",
     "start:tests": "watchexec --restart --watch Sources --watch Tests --exts swift --signal SIGINT swift test",
     "debug": "export LOG_LEVEL=trace; npm run start",
     "deploy:staging": "fldev tsnode deploy.ts",
