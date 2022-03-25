@@ -71,6 +71,20 @@ enum SendGrid {
       self.replyTo = replyTo
       content = .init(Content(type: "text/plain", value: text))
     }
+
+    init(
+      to: EmailAddress,
+      from: EmailAddress,
+      replyTo: EmailAddress? = nil,
+      subject: String,
+      html: String
+    ) {
+      personalizations = .init(Personalization(to: .init(to)))
+      self.from = from
+      self.subject = subject
+      self.replyTo = replyTo
+      content = .init(Content(type: "text/html", value: html))
+    }
   }
 }
 
