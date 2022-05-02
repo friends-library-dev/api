@@ -28,7 +28,7 @@ extension AudioPart {
       return false
     }
 
-    if duration < 200 {
+    if isPublished, duration < 200 {
       return false
     }
 

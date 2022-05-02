@@ -16,6 +16,14 @@ final class AudioPartValidityTests: XCTestCase {
     XCTAssertFalse(part.isValid)
   }
 
+  func testTooSmallDurationValidIfNotPublished() {
+    let part = AudioPart.valid
+    part.mp3SizeLq = 0
+    part.mp3SizeHq = 0
+    part.duration = 120
+    XCTAssertTrue(part.isValid)
+  }
+
   func testNegativeValuesForMp3SizeInvalid() {
     var part = AudioPart.valid
     part.mp3SizeHq = -1
