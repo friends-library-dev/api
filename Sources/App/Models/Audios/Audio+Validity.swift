@@ -36,11 +36,13 @@ extension Audio {
       return false
     }
 
-    if let extLq = externalPlaylistIdLq, extLq < 900000000 {
+    let isPublished = m4bSizeHq != 0
+
+    if isPublished, let extLq = externalPlaylistIdLq, extLq < 900000000 {
       return false
     }
 
-    if let extHq = externalPlaylistIdHq, extHq < 900000000 {
+    if isPublished, let extHq = externalPlaylistIdHq, extHq < 900000000 {
       return false
     }
 

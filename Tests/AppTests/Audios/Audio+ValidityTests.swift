@@ -19,6 +19,11 @@ final class AudioValidityTests: XCTestCase {
     audio.externalPlaylistIdLq = 500
     audio.externalPlaylistIdHq = 9999999999
     XCTAssertFalse(audio.isValid)
+
+    // but is valid if not published yet
+    audio.m4bSizeLq = 0
+    audio.m4bSizeHq = 0
+    XCTAssertTrue(audio.isValid)
   }
 
   func testOnlyOneNilPlaylistIdInvalid() {
