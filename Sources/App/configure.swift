@@ -3,8 +3,6 @@ import FluentPostgresDriver
 import GraphQLKit
 import QueuesFluentDriver
 import Vapor
-import XSendGrid
-import XVapor
 
 typealias Future = EventLoopFuture
 typealias Env = Vapor.Environment
@@ -106,19 +104,6 @@ private func configureScheduledJobs(_ app: Application) throws {
   app.queues.configuration.refreshInterval = .seconds(300)
   app.queues.use(.fluent(useSoftDeletes: false))
 
-  let backupJob = BackupJob(dbName: Env.DATABASE_NAME, pgDumpPath: Env.PG_DUMP_PATH) {
-    let filedate = BackupJob.filedate()
-    var email = SendGrid.Email(
-      to: "jared@netrivet.com",
-      from: .friendsLibrary,
-      subject: "[FLP] Database backup \(filedate)",
-      text: "Backup attached."
-    )
-    email.attachments = [try .init(data: $0, filename: "flp-backup_\(filedate).sql.gz")]
-    try await Current.sendGridClient.send(email)
-  }
-
-  app.queues.schedule(backupJob).daily().at(.midnight)
   app.queues.schedule(ProcessOrdersJob()).hourly().at(15)
   app.queues.schedule(SyncStagingDbJob()).hourly().at(45)
   app.queues.schedule(VerifyConsistentChapterHeadingsJob()).daily().at(8, 0)
